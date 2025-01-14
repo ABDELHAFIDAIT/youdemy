@@ -4,7 +4,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
                 <div class="flex items-center gap-1">
-                    <img class="w-14" src="./assets/img/logo.png" alt="Logo de Youdemy Plateforme">
+                    <img class="w-14" src="../../assets/img/logo.png" alt="Logo de Youdemy Plateforme">
                     <h1 class="text-2xl font-semibold">You<span class="text-blue-400">Demy</span></h1>
                 </div>
                 <p class="text-gray-400 mt-2">Votre plateforme d'apprentissage en ligne</p>

@@ -12,23 +12,23 @@
 <body>
     <header>
         <!-- Navbar Section -->
-        <nav class="px-5 py-3 flex items-center justify-between gap-5 shadow-md bg-white shadow-lg fixed w-full z-50">
+        <nav class="px-5 py-3 flex items-center justify-between gap-5 shadow-md bg-white bg-opacity-90 shadow-lg fixed w-full z-50">
             <div class="flex items-center gap-1">
                 <img class="w-14" src="../../assets/img/logo.png" alt="Logo de Youdemy Plateforme">
                 <h1 class="text-2xl font-semibold">You<span class="text-blue-800">Demy</span></h1>
             </div>
             <div class="hidden lg:flex items-center justify-between gap-20">
                 <ul class="flex items-center gap-10 text-md">
-                    <a href="#"><li class="active cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Accueil</li></a>
-                    <a href="#"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Catégories</li></a>
-                    <a href="#"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Cours</li></a>
-                    <a href="#"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Contact</li></a>
+                    <a href="#"><li class="active cursor-pointer duration-300">Accueil</li></a>
+                    <a href="categories.php"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Catégories</li></a>
+                    <a href="courses.php"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Cours</li></a>
+                    <a href="contact.php"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Contact</li></a>
                 </ul>
                 <div class="flex gap-3">
-                    <a href="#">
+                    <a href="../auth/login.php">
                         <button class="rounded-sm py-1 px-5 border border-black text-md duration-500 hover:text-white hover:bg-blue-700 hover:border-blue-500">Connexion</button>
                     </a>
-                    <a href="#">
+                    <a href="../auth/register.php">
                         <button class="rounded-sm py-1 px-5 border border-blue-500 text-md text-white bg-blue-600 duration-500 hover:bg-blue-900 hover:border-blue-900">Inscription</button>
                     </a>
                 </div>
