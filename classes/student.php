@@ -2,7 +2,7 @@
 
     require_once __DIR__ .'./user.php';
 
-    class Teacher extends User {
+    class Student extends User {
 
         
 
