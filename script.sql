@@ -30,7 +30,7 @@ CREATE TABLE categories (
 
 CREATE TABLE courses (
 	id_course INT AUTO_INCREMENT PRIMARY KEY,
-    titre VARCHAR(100) NOT NULL,
+    titre VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     couverture VARCHAR(255) NOT NULL,
     contenu TEXT,
