@@ -5,39 +5,40 @@ class Validator {
     
     public static function required($value, $fieldName) {
         if (empty($value)) {
-            echo "<script>alert('$fieldName est requis.');</script>";
+            throw new Exception("$fieldName est requis.");
         }
     }
 
     
     public static function minLength($value, $minLength, $fieldName) {
         if (strlen($value) < $minLength) {
-            echo "<script>alert('$fieldName doit contenir au moins $minLength caractères.');</script>";
+            throw new Exception("$fieldName doit contenir au moins $minLength caractères.");
         }
     }
 
     
     public static function maxLength($value, $maxLength, $fieldName) {
         if (strlen($value) > $maxLength) {
-            echo "<script>alert('$fieldName doit contenir au maximum $maxLength caractères.');</script>";
+            throw new Exception("$fieldName doit contenir au maximum $maxLength caractères.");
         }
     }
 
     
-    public static function validatePassword($password, $fieldName) {
+    public static function validatePassword($password) {
         $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/';
         if (!preg_match($pattern, $password)) {
-            echo "<script>alert('$fieldName doit contenir au moins une lettre majuscule, une minuscule, un chiffre et un caractère spécial.');</script>";
+            throw new Exception("Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.");
         }
     }
 
     
-    public static function validateEmail($email, $fieldName) {
+    public static function validateEmail($email) {
         $pattern = '/^[a-zA-Z0-9._-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/';
         if (!preg_match($pattern, $email)) {
-            echo "<script>alert('$fieldName est invalide.');</script>";
+            throw new Exception("L'email est invalide.");
         }
     }
 }
+
 
 ?>
