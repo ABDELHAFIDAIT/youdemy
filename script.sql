@@ -35,6 +35,7 @@ CREATE TABLE courses (
     couverture VARCHAR(255) NOT NULL,
     contenu TEXT,
     video VARCHAR(255),
+    date_publication DATE DEFAULT CURRENT_DATE,
     statut_cours ENUM('Approuvé','En Attente','Refusé') DEFAULT 'En Attente',
     id_categorie INT NOT NULL,
     id_teacher INT NOT NULL,
