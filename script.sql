@@ -31,6 +31,8 @@ CREATE TABLE categories (
 CREATE TABLE courses (
 	id_course INT AUTO_INCREMENT PRIMARY KEY,
     titre VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    couverture VARCHAR(255) NOT NULL,
     contenu TEXT,
     video VARCHAR(255),
     statut_cours ENUM('Approuvé','En Attente','Refusé') DEFAULT 'En Attente',
@@ -64,3 +66,5 @@ CREATE TABLE enrollments (
     FOREIGN KEY (id_course) REFERENCES courses(id_course) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_student) REFERENCES users(id_user) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- DROP DATABASE youdemy ;
