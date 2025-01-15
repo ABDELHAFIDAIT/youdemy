@@ -11,7 +11,7 @@ CREATE TABLE users (
 	id_user INT AUTO_INCREMENT PRIMARY KEY,
     prenom VARCHAR(20) NOT NULL,
 	nom VARCHAR(20) NOT NULL,
-    photo VARCHAR(255),
+    photo VARCHAR(255) DEFAULT 'user.png',
     phone VARCHAR(20),
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -24,8 +24,7 @@ CREATE TABLE users (
 CREATE TABLE categories (
 	id_categorie INT AUTO_INCREMENT PRIMARY KEY,
     nom_categorie VARCHAR(100) NOT NULL,
-    description VARCHAR(255),
-    date_creation DATE DEFAULT CURRENT_DATE
+    description VARCHAR(255)
 );
 
 CREATE TABLE courses (
@@ -67,5 +66,11 @@ CREATE TABLE enrollments (
     FOREIGN KEY (id_course) REFERENCES courses(id_course) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_student) REFERENCES users(id_user) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+INSERT INTO roles(label)
+VALUES ('Admin'),
+       ('Etudiant'),
+       ('Enseignant');
 
 -- DROP DATABASE youdemy ;
