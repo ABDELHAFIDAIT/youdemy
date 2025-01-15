@@ -139,54 +139,50 @@ document.addEventListener('DOMContentLoaded', function(){
 
             const firstName = document.getElementById('firstName').value.trim();
             const lastName = document.getElementById('lastName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
-            const confirmPassword = document.getElementById('confirmPassword').value.trim();
             const termsAccepted = document.getElementById('terms')?.checked;
 
             let isValid = true;
+            let errorMessage = '';
 
             // Validation checks
-            if (!firstName || !lastName || !email || !password || !confirmPassword) {
-                alert('Veuillez remplir tous les champs');
+            if (!firstName || !lastName || !email || !password) {
+                errorMessage += 'Veuillez remplir tous les champs.\n';
                 isValid = false;
             }
 
             // Validate first name and last name
             const nameRegex = /^[a-zA-Z- ]{2,}$/;
             if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
-                alert('Veuillez entrer un prénom et un nom valide');
-                isValid = false;
-            }
-
-            if (password !== confirmPassword) {
-                alert('Les mots de passe ne correspondent pas');
+                errorMessage += 'Veuillez entrer un prénom et un nom valide.\n';
                 isValid = false;
             }
 
             if (!termsAccepted) {
-                alert('Vous devez accepter les conditions d\'utilisation');
+                errorMessage += 'Vous devez accepter les conditions d\'utilisation.\n';
                 isValid = false;
             }
 
             // Validate email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                alert('Veuillez entrer une adresse email valide');
+                errorMessage += 'Veuillez entrer une adresse email valide.\n';
                 isValid = false;
             }
 
             // Validate password
             const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
             if (!passwordRegex.test(password)) {
-                alert(
-                    'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial'
-                );
+                errorMessage += 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.\n';
                 isValid = false;
             }
 
             if (isValid) {
                 registerForm.submit();
+            } else {
+                alert(errorMessage);
             }
         });
     }

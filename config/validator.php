@@ -14,23 +14,26 @@ class Validator {
     
     public static function minLength($value, $minLength, $fieldName) {
         if (strlen($value) < $minLength) {
-            throw new Exception("$fieldName doit contenir au moins $minLength caractères.");
+            return false;
         }
+        return true;
     }
 
     
     public static function maxLength($value, $maxLength, $fieldName) {
         if (strlen($value) > $maxLength) {
-            throw new Exception("$fieldName doit contenir au maximum $maxLength caractères.");
+            return false;
         }
+        return true;
     }
 
     
     public static function validatePassword($password) {
         $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/';
         if (!preg_match($pattern, $password)) {
-            throw new Exception("Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.");
+            return false;
         }
+        return true;
     }
 
     

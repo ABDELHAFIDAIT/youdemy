@@ -109,5 +109,37 @@ class User {
 
 
     // SIGNUP FUNCTION
-
+    public function register(string $nom, string $prenom, string $phone, string $email, string $password, int $role){
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        if($stmt->rowCount() > 0){
+            die('<script>alert("Email déjà Utilisé !")</script>');
+        }
+        
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        
+        try {
+            $test = $this->database;
+            $stmt = $test->prepare("INSERT INTO users (prenom, nom, phone, email, password, id_role, statut) VALUES (:prenom, :nom, :phone, :email, :pw , :role, :statut)");
+            $stmt->bindParam(":prenom", $prenom, PDO::PARAM_STR);
+            $stmt->bindParam(":nom", $nom, PDO::PARAM_STR);
+            $stmt->bindParam(":phone", $phone, PDO::PARAM_STR);
+            $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+            $stmt->bindParam(":pw", $hashedPassword, PDO::PARAM_STR);
+            $stmt->bindParam(":role", $role, PDO::PARAM_STR);
+            if($role == 2){
+                $stmt->bindValue(":statut", 'Actif', PDO::PARAM_STR);
+            }else{
+                $stmt->bindValue(":statut", 'En Attente', PDO::PARAM_STR);
+            }
+    
+            $stmt->execute();
+    
+        } catch (PDOException $e) {
+            return "Erreur lors de l'inscription : " . $e->getMessage();
+        }
+    }
 }

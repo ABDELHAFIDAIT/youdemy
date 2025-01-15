@@ -3,10 +3,21 @@
     
     require_once '../../config/db.php';
     require_once '../../config/validator.php';
-    require_once "../../classes/user.php";
+    require_once '../../classes/user.php';
     
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
+    if (isset($_SESSION["role"])){
+        if($_SESSION['role'] === 'Admin'){
+            header("Location: ../admin/dashboard.php");
+        }else if($_SESSION['role'] === 'Enseignant'){
+            header("Location: ../teacher/dashboard.php");
+        }else{
+            header("Location: ../student/courses.php");
+        }
+        exit;
     }
 
     if($_SERVER['REQUEST_METHOD']==='POST'){
@@ -31,6 +42,7 @@
                         $_SESSION['phone'] = htmlspecialchars($loggedInUser->getTelephone(), ENT_QUOTES, 'UTF-8');
                         $_SESSION['role'] = htmlspecialchars($loggedInUser->getRole(), ENT_QUOTES, 'UTF-8');
                         $_SESSION['photo'] = htmlspecialchars($loggedInUser->getPhoto(), ENT_QUOTES, 'UTF-8');
+                        $_SESSION['status'] = htmlspecialchars($loggedInUser->getStatus(), ENT_QUOTES, 'UTF-8');
 
                         if($_SESSION['role'] === 'Admin'){
                             header("Location: ../admin/dashboard.php");
@@ -40,8 +52,10 @@
                             header("Location: ../student/courses.php");
                         }
                         exit;
-                    }else{
+                    }else if($loggedInUser->getStatus() == 'Bloqué'){
                         echo '<script>alert("Votre Compte est Banné !")</script>';
+                    }else{
+                        echo '<script>alert("Votre Compte n\'est pas encore Confirmé !")</script>';
                     }
                 }
             }

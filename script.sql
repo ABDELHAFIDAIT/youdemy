@@ -16,7 +16,7 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     date_inscription DATE DEFAULT CURRENT_DATE,
-    statut ENUM('Actif','Bloqué') DEFAULT 'Actif',
+    statut ENUM('Actif','En Attente','Bloqué'),
     id_role INT NOT NULL,
     FOREIGN KEY (id_role) REFERENCES roles(id_role) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -72,5 +72,8 @@ INSERT INTO roles(label)
 VALUES ('Admin'),
        ('Etudiant'),
        ('Enseignant');
+
+INSERT INTO users(prenom,nom,phone,email,password,statut)
+VALUES ('Ahmed','Alami','0691766935','admin@youdemy.com','$2y$10$VT/B2qW6uHFx/IUhCApVdeyLPvXum3XoAvAfIxtcKlRHkQrkl67r.','Actif');
 
 -- DROP DATABASE youdemy ;

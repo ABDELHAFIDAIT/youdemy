@@ -1,3 +1,67 @@
+<?php
+
+    session_start();
+        
+    require_once '../../config/db.php';
+    require_once '../../config/validator.php';
+    require_once '../../classes/user.php';
+
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
+    if (isset($_SESSION["role"])){
+        if($_SESSION['role'] === 'Admin'){
+            header("Location: ../admin/dashboard.php");
+        }else if($_SESSION['role'] === 'Enseignant'){
+            header("Location: ../teacher/dashboard.php");
+        }else{
+            header("Location: ../student/courses.php");
+        }
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // if (isset($_POST['registerBtn'])) {
+            $nom = htmlspecialchars($_POST['nom'], ENT_QUOTES, 'UTF-8');
+            $prenom = htmlspecialchars($_POST['prenom'], ENT_QUOTES, 'UTF-8');
+            $phone = htmlspecialchars($_POST['phone'], ENT_QUOTES, 'UTF-8');
+            $email = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
+            $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
+            $role = htmlspecialchars($_POST['role'], ENT_QUOTES, 'UTF-8');
+
+            switch (true){
+                case !Validator::required($nom, 'Nom') 
+                    || !Validator::required($prenom, 'Prenom')
+                    || !Validator::required($phone, 'Numéro de Téléphone')
+                    || !Validator::required($email, 'Email')
+                    || !Validator::required($password, 'Password'):
+                        $error_message = "Veuillez remplir tous les champs.";
+                        break;
+                case !Validator::minLength($nom,2,'Nom')
+                    || !Validator::maxLength($nom,20,'Nom'):
+                    echo'<script>alert("le Nom doit contenir au moins 3 caractères et 20 caractères au max !")</script>';
+                    break;
+                case !Validator::minLength($prenom,2,'Prenom') 
+                    || !Validator::maxLength($prenom,20,'Prenom'):
+                    echo'<script>alert("le Prenom doit contenir au moins 3 caractères !")</script>';
+                    break;
+                case !Validator::validateEmail($email):
+                    echo '<script>alert("Email entré est invalide !")</script>';
+                    break;
+                case !Validator::validatePassword($password):
+                    echo '<script>alert("Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.")</script>';
+                    break;
+                default :
+                    $user = new User();
+                    $user->register($nom, $prenom, $phone, $email, $password, $role);
+                    header("location: ./login.php");
+                    break;
+            }
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,19 +81,28 @@
                 <a href="../guest" class="text-3xl font-bold gradient-text">Youdemy</a>
                 <h2 class="mt-4 text-2xl font-semibold text-gray-800">Créez votre compte</h2>
             </div>
-            <form id="registerForm" class="space-y-6">
+
+            <?php if (isset($error_message)): ?>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <strong class="font-bold">Erreur!</strong>
+                    <span class="block sm:inline"><?php echo $error_message; ?></span>
+                </div>
+            <?php endif; ?>
+            <!-- Register Form -->
+            <form method="POST" action="" id="registerForm" class="space-y-6">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label for="firstName" class="block text-sm font-medium text-gray-700">Prénom</label>
+                        <label for="prenom" class="block text-sm font-medium text-gray-700">Prénom</label>
                         <div class="mt-1">
-                            <input type="text" id="firstName" name="firstName" required 
+                            <input type="text" id="firstName" name="prenom" required 
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
                     <div>
-                        <label for="lastName" class="block text-sm font-medium text-gray-700">Nom</label>
+                        <label for="nom" class="block text-sm font-medium text-gray-700">Nom</label>
                         <div class="mt-1">
-                            <input type="text" id="lastName" name="lastName" required 
+                            <input type="text" id="lastName" name="nom" required 
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
@@ -74,12 +147,14 @@
                     </div>
                 </div>
                 <div>
-                    <button type="submit" 
+                    <button type="submit" name="registerBtn"
                         class="bg-blue-500 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white duration-500 hover:bg-blue-700">
                         Créer un compte
                     </button>
                 </div>
             </form>
+
+
             <div class="mt-6">
                 <div class="relative">
                     <div class="absolute inset-0 flex items-center">
