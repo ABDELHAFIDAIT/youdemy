@@ -31,3 +31,11 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+.gradient-text {
+    background: linear-gradient(45deg, #3b82f6, #2563eb);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: pulse 2s infinite;
+}
