@@ -1,3 +1,54 @@
+<?php
+    session_start();
+    
+    require_once '../../config/db.php';
+    require_once '../../config/validator.php';
+    require_once "../../classes/user.php";
+    
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
+    if($_SERVER['REQUEST_METHOD']==='POST'){
+        if(isset($_POST['loginBtn'])){
+            $email = htmlspecialchars(trim($_POST['email']), ENT_QUOTES, 'UTF-8');
+            $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
+
+            if (!Validator::required($email, 'Email') || !Validator::required($password, 'Password')) {
+                $alert =  '<script>alert("Veuillez remplir tous les champs.")</script>';
+                echo $alert ;
+            } else {
+                $user = new User();
+    
+                $loggedInUser = $user->login($email, $password);
+    
+                if ($loggedInUser) {
+                    if($loggedInUser->getStatus() == 'Actif'){
+                        $_SESSION['id_user'] = htmlspecialchars($loggedInUser->getId(), ENT_QUOTES, 'UTF-8');
+                        $_SESSION['prenom'] = htmlspecialchars($loggedInUser->getPrenom(), ENT_QUOTES, 'UTF-8');
+                        $_SESSION['nom'] = htmlspecialchars($loggedInUser->getNom(), ENT_QUOTES, 'UTF-8');
+                        $_SESSION['email'] = htmlspecialchars($loggedInUser->getEmail(), ENT_QUOTES, 'UTF-8');
+                        $_SESSION['phone'] = htmlspecialchars($loggedInUser->getTelephone(), ENT_QUOTES, 'UTF-8');
+                        $_SESSION['role'] = htmlspecialchars($loggedInUser->getRole(), ENT_QUOTES, 'UTF-8');
+                        $_SESSION['photo'] = htmlspecialchars($loggedInUser->getPhoto(), ENT_QUOTES, 'UTF-8');
+
+                        if($_SESSION['role'] === 'Admin'){
+                            header("Location: ../admin/dashboard.php");
+                        } else if($_SESSION['role'] === 'Enseignant'){
+                            header("Location: ../teacher/dashboard.php");
+                        } else if($_SESSION['role'] === 'Etudiant'){
+                            header("Location: ../student/courses.php");
+                        }
+                        exit;
+                    }else{
+                        echo '<script>alert("Votre Compte est Banné !")</script>';
+                    }
+                }
+            }
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,7 +68,11 @@
                 <a href="../guest" class="text-3xl font-bold gradient-text">Youdemy</a>
                 <h2 class="mt-4 text-2xl font-semibold text-gray-800">Connectez-vous à votre compte</h2>
             </div>
-            <form id="loginForm" class="space-y-6">
+
+
+            <!-- Login Form -->
+            <form method="POST" action="" id="loginForm" class="space-y-6">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                     <div class="mt-1">
@@ -28,7 +83,7 @@
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
                     <div class="mt-1">
-                        <input type="password" id="password" name="password" required 
+                        <input type="password" id="password" name="password"  
                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
@@ -47,12 +102,14 @@
                     </div>
                 </div>
                 <div>
-                    <button type="submit" 
+                    <button type="submit" name="loginBtn"
                         class="bg-blue-500 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white duration-500 hover:bg-blue-700">
                         Se connecter
                     </button>
                 </div>
             </form>
+
+
             <div class="mt-6">
                 <div class="relative">
                     <div class="absolute inset-0 flex items-center">

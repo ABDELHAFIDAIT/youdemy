@@ -5,7 +5,9 @@ class Validator {
     
     public static function required($value, $fieldName) {
         if (empty($value)) {
-            throw new Exception("$fieldName est requis.");
+            return false;
+        }else{
+            return true;
         }
     }
 

@@ -72,43 +72,38 @@ class User {
 
 
     // LOGIN FUNCTION
-    public function login($email, $password) {
-        try{
-            if(!Validator::validateEmail($email)){
-                echo '<script>alert(L\'email saisi est invalide !)</script>';
-            }
-            if(!Validator::validatePassword($password)){
-                echo '<script>alert(Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial !)</script>';
-            }
-            if(Validator::validateEmail($email) && Validator::validatePassword($password)){
-                $query = "SELECT * FROM users WHERE email = :email";
-                $stmt = $this->database->prepare($query);
+    public function login(string $email, string $password) {
+        try {
+            $query = "SELECT * FROM users U JOIN roles R ON U.id_role = R.id_role WHERE email = :email";
+            $stmt = $this->database->prepare($query);
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->execute();
 
-                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            if ($stmt->rowCount() > 0) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                $stmt->execute();
+                if (password_verify($password, $row['password'])) {
+                    $this->id = $row['id_user'];
+                    $this->prenom = $row['prenom'];
+                    $this->nom = $row['nom'];
+                    $this->email = $row['email'];
+                    $this->telephone = $row['phone'];
+                    $this->role = $row['label'];
+                    $this->photo = $row['photo'];
+                    $this->status = $row['statut'];
 
-                if ($stmt->rowCount() > 0) {
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if (password_verify($password, $row['password'])) {
-                        $this->id = $row['id_user'];
-                        $this->prenom = $row['prenom'];
-                        $this->nom = $row['nom'];
-                        $this->email = $row['email'];
-                        $this->telephone = $row['telephone'];
-                        $this->role = $row['role'];
-                        $this->photo = $row['photo'];
-                        $this->status = $row['isBanned'];
-
-                        return $this;
-                    }
+                    return $this;
+                } else {
+                    echo '<script>alert("Le mot de passe est incorrect !")</script>';
+                    return false;
                 }
-
+            } else {
+                echo '<script>alert("Aucun utilisateur trouvé avec cet email !")</script>';
                 return false;
             }
         } catch (PDOException $e) {
-            return "Erreur lors de l'authentification : " . $e->getMessage();
+            echo '<script>alert("Erreur lors de l\'authentification : ' . $e->getMessage() . '")</script>';
+            return false;
         }
     }
 

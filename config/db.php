@@ -11,7 +11,7 @@ class Database {
 
     private function __construct() {
         $this->host = 'localhost';
-        $this->db = 'culture_connect';
+        $this->db = 'youdemy';
         $this->user = 'root';
         $this->pass = '';
         $this->charset = 'utf8mb4';
