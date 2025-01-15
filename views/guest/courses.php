@@ -1,3 +1,22 @@
+<?php
+
+    session_start();
+
+    if (isset($_SESSION["role"])){
+        if($_SESSION['role'] === 'Admin'){
+            header("Location: ../admin/dashboard.php");
+        }else if($_SESSION['role'] === 'Enseignant'){
+            header("Location: ../teacher/dashboard.php");
+        }else{
+            header("Location: ../student/courses.php");
+        }
+        exit;
+    }
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
