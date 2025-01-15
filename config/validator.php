@@ -32,10 +32,12 @@ class Validator {
     }
 
     
-    public static function validateEmail($email) {
+    public static function validateEmail($email): bool {
         $pattern = '/^[a-zA-Z0-9._-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/';
         if (!preg_match($pattern, $email)) {
-            throw new Exception("L'email est invalide.");
+            return false;
+        }else{
+            return true;
         }
     }
 }

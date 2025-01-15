@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const mobileMenu = document.querySelector('.mobile-menu');
 
+    if(mobileMenuButton){
     mobileMenuButton.addEventListener('click', function() {
         mobileMenu.classList.toggle('hidden');
         if (!mobileMenu.classList.contains('hidden')) {
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
             }, 100);
         }
     });
+    }
 
     // Testimonials Carousel
     const initTestimonialsCarousel = () => {
@@ -126,6 +128,88 @@ document.addEventListener('DOMContentLoaded', function(){
     // Initialize carousel when DOM is loaded
     if (document.querySelector('.testimonials-carousel')) {
         initTestimonialsCarousel();
+    }
+
+    // Login and Registration Form Handling
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('remember-me').checked;
+
+            // Validation checks
+            if (!email || !password) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Veuillez entrer une adresse email valide');
+                return;
+            }
+
+            // Validate password
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                alert('Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial');
+                return;
+            }
+        });
+    }
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const termsAccepted = document.getElementById('terms').checked;
+
+            // Validation checks
+            if (!firstName || !lastName || !email || !password || !confirmPassword) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+
+            // Validate first name and last name
+            const nameRegex = /^[a-zA-Z- ]{2,}$/;
+            if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+                alert('Veuillez entrer un prénom et un nom valide');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Les mots de passe ne correspondent pas');
+                return;
+            }
+
+            if (!termsAccepted) {
+                alert('Vous devez accepter les conditions d\'utilisation');
+                return;
+            }
+
+            // Validate email
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                alert('Veuillez entrer une adresse email valide');
+                return;
+            }
+
+            // Validate password
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                alert('Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial');
+                return;
+            }
+        });
     }
 
 });
