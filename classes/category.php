@@ -9,7 +9,9 @@
         private string $date;
         private $database;
 
-        public function __construct(){
+        public function __construct($name,$description){
+            $this->name = $name;
+            $this->description = $description;
             $this->database = Database::getInstance()->getConnection();
         }
 
@@ -151,6 +153,7 @@
             try {
                 $query = "SELECT 
                             Ca.nom_categorie AS categorie,
+                            Ca.description AS description,
                             COUNT(Co.id_course) AS total_approved_courses
                         FROM 
                             categories Ca

@@ -1,4 +1,20 @@
 <?php
+    session_start();
+
+    require_once '../../classes/category.php';
+
+    $category = new Categorie('','');
+
+    if (isset($_SESSION["role"])){
+        if($_SESSION['role'] === 'Admin'){
+            header("Location: ../admin/dashboard.php");
+        }else if($_SESSION['role'] === 'Enseignant'){
+            header("Location: ../teacher/dashboard.php");
+        }else{
+            header("Location: ../student/courses.php");
+        }
+        exit;
+    }
 
 
 
@@ -63,8 +79,58 @@
         </section>
     </header>
 
-    <main class="h-screen">
+    <main class="px-5 py-10">
         <section class="md:grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            
+            <?php
+            
+            $categories = $category->getCoursesPerCategory('Approuvé');
+            $color = ['blue-600','red-600','green-600','orange-600','purple-600','gray-600','rose-600', 'black'];
+
+            $index = 0;
+
+            if(is_array($categories)){
+                foreach($categories as $categorie) {
+                    if($categorie['total_approved_courses'] != 0){ ?>
+
+                    <div class="category-card bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="relative h-48 bg-<?php echo $color[$index]; ?>">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="text-white text-3xl"><?php echo $categorie['total_approved_courses']; ?> Cours</i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2"><?php echo $categorie['categorie']; ?></h3>
+                        <p class="text-gray-600 mb-4"><?php echo $categorie['description']; ?></p>
+                        <a href="courses.php" class="inline-block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                            Explorer les cours
+                        </a>
+                    </div>
+                </div>
+
+            <?php
+            
+                    }
+                    if($index <= 8){
+                        $index++;
+                    }else{
+                        $index = 0;
+                    }
+                    
+
+                } 
+
+            }else{
+                echo '
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <h1 class="font-semibold text-4xl text-center text-red-600">PAS DE CATEGORIES POUR LE MOMENTS</h1>
+                    </div>
+                ';
+            }
+            
+            ?>
+            
+            
 
         </section>
     </main>
