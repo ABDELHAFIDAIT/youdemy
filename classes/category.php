@@ -62,6 +62,28 @@
         }
 
         
+        // GET CATEGORY BY ID
+        public function getCategory($id) {
+            try {
+                $query = "SELECT id_categorie, nom_categorie, description 
+                        FROM categories 
+                        WHERE id_categorie = :id";
 
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->execute();
+
+                if ($stmt->rowCount() > 0) {
+                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                    return $result;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la récupération de la catégorie : " . $e->getMessage());
+            }
+        }
+
+        
 
     }
