@@ -124,4 +124,29 @@
             }
         }
 
+
+        
+        // UPDATE CATEGORY
+        public function updateCategory($id_categorie, $nom_categorie, $description) {
+            try {
+                $query = "UPDATE categories 
+                        SET nom_categorie = :nom_categorie, 
+                            description = :description 
+                        WHERE id_categorie = :id";
+
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(':id', $id_categorie, PDO::PARAM_INT);
+                $stmt->bindParam(':nom_categorie', $nom_categorie, PDO::PARAM_STR);
+                $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+
+                if ($stmt->execute()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la mise à jour de la catégorie : " . $e->getMessage());
+            }
+        }
+
     }
