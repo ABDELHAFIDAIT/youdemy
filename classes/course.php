@@ -276,4 +276,43 @@
                 throw new Exception('Erreur Lors de la Récupération du Nombre des Cours : '. $e->getMessage());
             }
         }
+
+        // LAST 3 COURSES PUBLISHED BY A SPECIFIC TEACHER
+        public function lastThreeCourses($id_teacher) {
+            try {
+                $query = "SELECT 
+                              Co.id_course,
+                              Co.titre,
+                              Co.description,
+                              Co.couverture,
+                              Co.contenu,
+                              Co.video,
+                              Co.niveau,
+                              Co.date_publication,
+                              Ca.nom_categorie AS categorie
+                          FROM 
+                              courses Co
+                          JOIN 
+                              categories Ca ON Co.id_categorie = Ca.id_categorie
+                          WHERE 
+                              Co.id_teacher = :id_teacher
+                          ORDER BY 
+                              Co.date_publication DESC
+                          LIMIT 3";
+        
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(":id_teacher", $id_teacher, PDO::PARAM_INT);
+                $stmt->execute();
+        
+                if ($stmt->rowCount() > 0) {
+                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    return $result;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la récupération des 3 derniers cours publiés par l'enseignant : " . $e->getMessage());
+            }
+        }
+        
     }
