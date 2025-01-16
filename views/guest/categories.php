@@ -53,9 +53,20 @@
                 <a href="../auth/register.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Inscription</a>
             </div>
         </nav>
+
+        <!-- Hero Section -->
+        <section class="category h-[85vh] pt-24 flex justify-center items-center text-white text-center">
+            <div class="flex flex-col items-center gap-5">
+                <h1 class="font-bold text-5xl">Explorez nos Catégories</h1>
+                <p class="text-xl font-extralight">Découvrez une large gamme de sujets pour enrichir vos connaissances</p>
+            </div>
+        </section>
     </header>
 
-    <main>
+    <main class="h-screen">
+        <section class="md:grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        </section>
     </main>
 
     <?php include_once '../../includes/footer.php'; ?>

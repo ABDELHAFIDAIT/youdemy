@@ -32,6 +32,13 @@
     background-repeat: no-repeat;
 }
 
+.category{
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) ,rgba(0, 0, 0, 0.9)), url('../img/ctg.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .gradient-text {
     background: linear-gradient(45deg, #3b82f6, #2563eb);
     -webkit-background-clip: text;
