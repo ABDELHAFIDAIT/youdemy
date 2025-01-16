@@ -222,5 +222,24 @@
                 throw new Exception('Erreur Lors de l\'Ajout du Cours : '. $e->getMessage());
             }
         }
-        
+
+
+        // DELETE COURSE
+        public function deleteCourse($id_course){
+            try{
+                $query = 'DELETE FROM courses WHERE id_course = :id';
+
+                $stmt = $this->database->prepare($query);
+
+                $stmt->bindParam(':id', $id_course, PDO::PARAM_INT);
+
+                if( $stmt->execute() ){
+                    return true;
+                }else{
+                    return false;
+                }
+            }catch(PDOException $e){
+                throw new Exception('Erreur Lors de La Suppression du Cours : '. $e->getMessage());
+            }
+        }
     }
