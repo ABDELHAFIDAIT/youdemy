@@ -85,5 +85,24 @@
         }
 
         
+        // ADD CATEGORY
+        public function addCategory($nom_categorie, $description) {
+            try {
+                $query = "INSERT INTO categories (nom_categorie, description) 
+                        VALUES (:nom_categorie, :description)";
+
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(':nom_categorie', $nom_categorie, PDO::PARAM_STR);
+                $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+
+                if ($stmt->execute()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de l'ajout de la catégorie : " . $e->getMessage());
+            }
+        }
 
     }
