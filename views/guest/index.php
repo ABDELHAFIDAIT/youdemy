@@ -32,10 +32,10 @@
     <header>
         <!-- Navbar Section -->
         <nav class="px-5 py-3 flex items-center justify-between gap-5 shadow-md bg-white bg-opacity-90 shadow-lg fixed w-full z-50">
-            <div class="flex items-center gap-1">
+            <a href="#" class="flex items-center gap-1">
                 <img class="w-14" src="../../assets/img/logo.png" alt="Logo de Youdemy Plateforme">
                 <h1 class="text-2xl font-semibold">You<span class="text-blue-800">Demy</span></h1>
-            </div>
+            </a>
             <div class="hidden lg:flex items-center justify-between gap-20">
                 <ul class="flex items-center gap-10 text-md">
                     <a href="#"><li class="active cursor-pointer duration-300">Accueil</li></a>
@@ -59,11 +59,11 @@
             </div>
             <div class="bg-white mobile-menu hidden lg:hidden absolute left-0 top-[70px] flex-1 w-full">
                 <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Accueil</a>
-                <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Catégories</a>
-                <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Cours</a>
-                <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Contact</a>
-                <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Connexion</a>
-                <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Inscription</a>
+                <a href="categories.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Catégories</a>
+                <a href="courses.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Cours</a>
+                <a href="contact.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Contact</a>
+                <a href="../auth/login.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Connexion</a>
+                <a href="../auth/register.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Inscription</a>
             </div>
         </nav>
 
