@@ -34,6 +34,7 @@ CREATE TABLE courses (
     couverture VARCHAR(255) NOT NULL,
     contenu TEXT,
     video VARCHAR(255),
+    niveau ENUM('Facile','Moyen','Difficile') NOT NULL,
     date_publication DATE DEFAULT CURRENT_DATE,
     statut_cours ENUM('Approuvé','En Attente','Refusé') DEFAULT 'En Attente',
     id_categorie INT NOT NULL,
@@ -73,7 +74,11 @@ VALUES ('Admin'),
        ('Etudiant'),
        ('Enseignant');
 
-INSERT INTO users(prenom,nom,phone,email,password,statut)
-VALUES ('Ahmed','Alami','0691766935','admin@youdemy.com','$2y$10$VT/B2qW6uHFx/IUhCApVdeyLPvXum3XoAvAfIxtcKlRHkQrkl67r.','Actif');
+INSERT INTO users(prenom,nom,phone,email,password,statut,id_role)
+VALUES ('Ahmed','Alami','0691766935','admin@youdemy.com','$2y$10$JO0u6o/YPazqktVyHUdvXOMGkLZCleV7ukpI55tRvM7IjmMpvL2zG','Actif',1);
 
 -- DROP DATABASE youdemy ;
+
+-- Password Admin : Test123@
+
+-- $2y$10$JO0u6o/YPazqktVyHUdvXOMGkLZCleV7ukpI55tRvM7IjmMpvL2zG
