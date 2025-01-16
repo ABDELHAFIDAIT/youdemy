@@ -148,5 +148,44 @@
                 throw new Exception("Erreur lors de la Récupération du Cours : ". $e->getMessage());
             }
         }
+
+        
+        // GET COURSES OF A SPECIFIC TEACHER
+        public function allTeacherCourses($id){
+            try{
+                $query = "SELECT Co.id_course,
+                                Co.titre,
+                                Co.description,
+                                Co.couverture,
+                                Co.contenu,
+                                Co.video,
+                                Co.niveau,
+                                Co.date_publication,
+                                Co.statut_cours,
+                                Ca.nom_categorie AS categorie,
+                                CONCAT(U.prenom, ' ', U.nom) AS enseignant
+                            FROM 
+                                courses Co
+                            JOIN 
+                                categories Ca ON Co.id_categorie = Ca.id_categorie
+                            JOIN 
+                                users U ON Co.id_teacher = U.id_user
+                            WHERE
+                                Co.id_teacher = :id
+                            ORDER BY
+                                Co.date_publication DESC, Co.id_course ASC";
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                $stmt->execute();
+                if($stmt->rowCount() > 0){
+                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    return $result;
+                }else{
+                    return false;
+                }
+            }catch(PDOException $e){
+                throw new Exception("Erreur lors de la Récupération des Cours de l'Enseignant : ". $e->getMessage());
+            }
+        }
         
     }
