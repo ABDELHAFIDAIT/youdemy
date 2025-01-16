@@ -105,7 +105,6 @@
             }
         }
 
-
         // DELETE CATEGORY
         public function deleteCategory($id_categorie) {
             try {
@@ -123,8 +122,6 @@
                 throw new Exception("Erreur lors de la suppression de la catégorie : " . $e->getMessage());
             }
         }
-
-
         
         // UPDATE CATEGORY
         public function updateCategory($id_categorie, $nom_categorie, $description) {
@@ -148,5 +145,38 @@
                 throw new Exception("Erreur lors de la mise à jour de la catégorie : " . $e->getMessage());
             }
         }
+
+        // GET NUMBER OF COURSES PER CATEGORY BASING ON STATUS
+        public function getCoursesPerCategory($status) {
+            try {
+                $query = "SELECT 
+                            Ca.nom_categorie AS categorie,
+                            COUNT(Co.id_course) AS total_approved_courses
+                        FROM 
+                            categories Ca
+                        LEFT JOIN 
+                            courses Co ON Ca.id_categorie = Co.id_categorie
+                        WHERE 
+                            Co.statut_cours = :statut
+                        GROUP BY 
+                            Ca.nom_categorie
+                        ORDER BY 
+                            total_approved_courses DESC";
+
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(":statut", $status, PDO::PARAM_STR);
+                $stmt->execute();
+
+                if ($stmt->rowCount() > 0) {
+                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    return $result;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la récupération des cours par catégorie : " . $e->getMessage());
+            }
+        }
+
 
     }
