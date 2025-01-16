@@ -40,4 +40,28 @@
             $this->date = $date;
         }
 
+
+        // GET ALL CATEGORIES
+        public function allCategories() {
+            try {
+                $query = "SELECT id_categorie, nom_categorie, description 
+                        FROM categories 
+                        ORDER BY id_categorie ASC";
+
+                $stmt = $this->database->prepare($query);
+                $stmt->execute();
+                if ($stmt->rowCount() > 0) {
+                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    return $result;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la récupération des catégories : " . $e->getMessage());
+            }
+        }
+
+        
+
+
     }
