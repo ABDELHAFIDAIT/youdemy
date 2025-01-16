@@ -56,5 +56,22 @@
                 throw new Exception("Erreur lors de l'ajout du Tag : " . $e->getMessage());
             }
         }
+
+
+        // DELETE TAG
+        public function deleteTag($id){
+            try {
+                $sql = "DELETE FROM tags WHERE id_tag = :id";
+                $stmt = $this->database->prepare($sql);
+                $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                if($stmt->execute()){
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur Lors de la Sppression du Tag : ". $e->getMessage());
+            }
+        }
         
     }
