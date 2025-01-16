@@ -242,4 +242,21 @@
                 throw new Exception('Erreur Lors de La Suppression du Cours : '. $e->getMessage());
             }
         }
+
+
+        // COUNT ALL COURSES
+        public function countCourses(){
+            try{
+                $query = 'SELECT COUNT(*) AS nbr_courses FROM courses';
+                $stmt = $this->database->prepare($query);
+                $stmt->execute();
+                if($stmt->rowCount()>0){
+                    return $stmt->fetch(PDO::FETCH_ASSOC);
+                }else{
+                    return 0;
+                }
+            }catch(PDOException $e){
+                throw new Exception('Erreur Lors de la Récupération du Nombre des Cours : '. $e->getMessage());
+            }
+        }
     }
