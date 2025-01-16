@@ -144,7 +144,7 @@
                     </div>
                 </div>
                 <div class="flex justify-end items-center mt-8 mr-5">
-                    <a href="#" class="flex items-center gap-3 text-lg font-medium text-blue-500 hover:text-blue-800">Voir Plus <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="categories.php" class="flex items-center gap-3 text-lg font-medium text-blue-500 hover:text-blue-800">Voir Plus <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
         </section>
@@ -216,7 +216,7 @@
                     </div>
                 </div>
                 <div class="flex justify-end items-center mt-8 mr-5">
-                    <a href="#" class="flex items-center gap-3 text-lg font-medium text-blue-500 hover:text-blue-800">Voir Plus <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="courses.php" class="flex items-center gap-3 text-lg font-medium text-blue-500 hover:text-blue-800">Voir Plus <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
         </section>
