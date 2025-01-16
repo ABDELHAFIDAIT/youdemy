@@ -73,5 +73,23 @@
                 throw new Exception("Erreur Lors de la Sppression du Tag : ". $e->getMessage());
             }
         }
+
+
+        // UPDATE TAG
+        public function updateTag($id,$nom){
+            try {
+                $sql = "UPDATE tags SET nom_tag = :nom WHERE id_tag = :id";
+                $stmt = $this->database->prepare($sql);
+                $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                $stmt->bindParam(":nom", $nom, PDO::PARAM_STR);
+                if($stmt->execute()){
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur Lors de la Modification du Tag : ". $e->getMessage());
+            }
+        }
         
     }
