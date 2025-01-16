@@ -14,7 +14,14 @@ class User {
     protected string $status;
     protected $database;
 
-    public function __construct() {
+    public function __construct($nom,$prenom,$telephone,$email,$password,$role,$status) {
+        $this->nom = $nom;
+        $this->prenom = $prenom;
+        $this->telephone = $telephone;
+        $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+        $this->status = $status;
         $this->database = Database::getInstance()->getConnection();
     }
 

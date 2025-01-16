@@ -7,7 +7,8 @@
 
         private $database;
 
-        public function __construct() {
+        public function __construct($nom) {
+            $this->nom = $nom;
             $this->database = Database::getInstance()->getConnection();
         }    
 

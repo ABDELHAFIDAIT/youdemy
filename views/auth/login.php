@@ -29,9 +29,9 @@
                 $alert =  '<script>alert("Veuillez remplir tous les champs.")</script>';
                 echo $alert ;
             } else {
-                $user = new User();
+                $user = new User("","","",$email,$password,"","");
     
-                $loggedInUser = $user->login($email, $password);
+                $loggedInUser = $user->login((string)$user->getEmail(), (string)$user->getPassword());
     
                 if ($loggedInUser) {
                     if($loggedInUser->getStatus() == 'Actif'){
