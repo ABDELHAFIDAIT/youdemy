@@ -105,4 +105,23 @@
             }
         }
 
+
+        // DELETE CATEGORY
+        public function deleteCategory($id_categorie) {
+            try {
+                $query = "DELETE FROM categories WHERE id_categorie = :id";
+
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(':id', $id_categorie, PDO::PARAM_INT);
+
+                if ($stmt->execute()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la suppression de la catégorie : " . $e->getMessage());
+            }
+        }
+
     }
