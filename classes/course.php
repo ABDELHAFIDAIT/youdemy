@@ -51,6 +51,9 @@
         public function getDate():string{
             return $this->date;
         }
+        public function getNiveau():string{
+            return $this->niveau;
+        }
 
         // SETTERS
         public function setTitre($titre):void{
@@ -73,6 +76,9 @@
         }
         public function setDate($date):void{
             $this->date = $date;
+        }
+        public function setNiveau($niveau):void{
+            $this->niveau = $niveau;
         }
 
 
@@ -185,6 +191,35 @@
                 }
             }catch(PDOException $e){
                 throw new Exception("Erreur lors de la Récupération des Cours de l'Enseignant : ". $e->getMessage());
+            }
+        }
+
+
+        // ADD COURSE
+        public function addCourse($titre,$description,$contenu,$video,$couverture,$niveau,$id_categorie,$id_teacher){
+            try{
+                $query = "INSERT INTO courses 
+                                (titre, description, contenu, video, couverture, niveau, id_categorie, id_teacher) 
+                         VALUES 
+                                (:titre, :description, :contenu, :video, :couverture, :niveau,:id_categorie, :id_teacher)";
+
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(':titre', $titre, PDO::PARAM_STR);
+                $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+                $stmt->bindParam(':contenu', $contenu, PDO::PARAM_STR);
+                $stmt->bindParam(':video', $video, PDO::PARAM_STR);
+                $stmt->bindParam(':couverture', $couverture, PDO::PARAM_STR);
+                $stmt->bindParam(':niveau', $niveau, PDO::PARAM_STR);
+                $stmt->bindParam(':id_categorie', $id_categorie, PDO::PARAM_INT);
+                $stmt->bindParam(':id_teacher', $id_teacher, PDO::PARAM_INT);
+
+                if($stmt->execute()){
+                    return true;
+                }else{
+                    return false;
+                }
+            }catch(PDOException $e){
+                throw new Exception('Erreur Lors de l\'Ajout du Cours : '. $e->getMessage());
             }
         }
         
