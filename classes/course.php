@@ -259,4 +259,21 @@
                 throw new Exception('Erreur Lors de la Récupération du Nombre des Cours : '. $e->getMessage());
             }
         }
+
+        // COUNT COURSES OF A SPECIFIC TEACHER
+        public function countTeacherCourses($id_teacher){
+            try{
+                $query = 'SELECT COUNT(*) AS nbr_courses FROM courses WHERE id_teacher = :id';
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(':id', $id_teacher, PDO::PARAM_INT);
+                $stmt->execute();
+                if($stmt->rowCount()>0){
+                    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }else{
+                    return 0;
+                }
+            }catch(PDOException $e){
+                throw new Exception('Erreur Lors de la Récupération du Nombre des Cours : '. $e->getMessage());
+            }
+        }
     }
