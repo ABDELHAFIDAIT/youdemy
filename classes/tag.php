@@ -25,5 +25,36 @@
         }
 
 
+        // ADD TAG
+        public function addTag($nom){
+            try {
+                $sql = "INSERT INTO tags (nom_tag) VALUES (:nom)";
+                $stmt = $this->database->prepare($sql);
+                $stmt->bindParam(":nom", $nom, PDO::PARAM_STR);
+                if($stmt->execute()){
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de l'ajout du Tag : " . $e->getMessage());
+            }
+        }
+
+
+        // ADD MULTIPLE TAGS
+        public function addMultipleTags(array $tags){
+            try {
+                $sql = "INSERT INTO tags (nom_tag) VALUES (:nom)";
+                $stmt = $this->database->prepare($sql);
+                foreach($tags as $tag){
+                    $stmt->bindParam(":nom", $tag, PDO::PARAM_STR);
+                    $stmt->execute();
+                }
+                return true;
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de l'ajout du Tag : " . $e->getMessage());
+            }
+        }
         
     }
