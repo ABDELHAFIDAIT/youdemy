@@ -2,6 +2,10 @@
 
     session_start();
 
+    require_once '../../classes/course.php';
+
+    $cours = new Course('','','','','','','');
+
     if (isset($_SESSION["role"])){
         if($_SESSION['role'] === 'Admin'){
             header("Location: ../admin/dashboard.php");
@@ -13,6 +17,21 @@
         exit;
     }
 
+
+    $limit = 3;
+
+    if(isset($_GET['page'])){
+        $page = (int)$_GET['page'];
+    }else{
+        $page = 1;
+    }
+
+    $depart = ($page - 1) * $limit;
+
+    $courses = $cours->getCourses('Approuvé', $limit, $depart);
+
+    $totalCourses = $cours->countCourse('Approuvé');
+    $totalPages = ceil($totalCourses / $limit);
 ?>
 
 
@@ -29,6 +48,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+    
     <header>
         <!-- Navbar Section -->
         <nav class="px-5 py-3 flex items-center justify-between gap-5 shadow-md bg-white bg-opacity-90 shadow-lg fixed w-full z-50">
@@ -86,7 +106,53 @@
         </section>
     </header>
 
-    <main class="py-16 px-5">
+    
+    <main class="py-10 px-5">
+        <section class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <?php 
+            if(is_array($courses)){
+                foreach($courses as $course){
+            ?>
+            <div class="course-card bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+                <div class="relative">
+                    <img src="../../uploads/<?php echo $course['couverture'] ?>" alt="Course" class="w-full h-48 object-cover">
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-xs"><?php echo $course['categorie'] ?></span>
+                        <span class="ml-2 text-gray-500 text-sm">•</span>
+                        <span class="ml-2 text-gray-500 text-sm"><?php echo $course['niveau'] ?></span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2"><?php echo $course['titre'] ?></h3>
+                    <p class="text-gray-600 mb-4 line-clamp-2"><?php echo $course['description'] ?></p>
+                    <div class="flex items-center mb-4">
+                        <img src="../../uploads/<?php echo $course['photo'] ?>" alt="Instructor" class="w-8 h-8 rounded-full">
+                        <span class="ml-2 text-gray-600"><?php echo $course['enseignant'] ?></span>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <a href="../auth/login.php" class="w-full">
+                            <button type="button" class="font-medium text-white bg-blue-600 w-full py-1 rounded-md hover:bg-blue-800">S'inscrire</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <?php
+                }
+            }else{
+                echo "<p class='text-center col-span-3 font-semibold text-3xl text-red-600 animate-bounce mt-5'>Aucun cours disponible pour le moment.</p>";
+            }
+            ?>
+        </section>
+
+        <section class="flex justify-center mt-10">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?php echo $page - 1; ?>" class="px-4 py-2 bg-blue-600 text-white rounded-lg mr-2 hover:bg-blue-800">Précédent</a>
+            <?php endif; ?>
+
+            <?php if ($page < $totalPages): ?>
+                <a href="?page=<?php echo $page + 1; ?>" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-800">Suivant</a>
+            <?php endif; ?>
+        </section>
     </main>
 
     <?php include_once '../../includes/footer.php'; ?>

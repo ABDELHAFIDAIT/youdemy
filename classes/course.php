@@ -83,7 +83,7 @@
 
 
         // GET ALL COURSES WITH CATEGORY NAME AND TEACHER FULL NAME
-        public function allCourses(){
+        public function allCourses($status){
             try{
                 $query = "SELECT Co.id_course,
                                 Co.titre,
@@ -95,17 +95,21 @@
                                 Co.date_publication,
                                 Co.statut_cours,
                                 Ca.nom_categorie AS categorie,
-                                CONCAT(U.prenom, ' ', U.nom) AS enseignant
+                                CONCAT(U.prenom, ' ', U.nom) AS enseignant,
+                                U.photo
                             FROM 
                                 courses Co
                             JOIN 
                                 categories Ca ON Co.id_categorie = Ca.id_categorie
                             JOIN 
                                 users U ON Co.id_teacher = U.id_user
+                            WHERE
+                                Co.statut_cours = :statut
                             ORDER BY
                                 Co.date_publication DESC, Co.id_course ASC";
 
                 $stmt = $this->database->prepare($query);
+                $stmt->bindValue(":statut", $status, PDO::PARAM_STR);
                 $stmt->execute();
                 if($stmt->rowCount() > 0){
                     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -115,6 +119,49 @@
                 }
             }catch(PDOException $e){
                 throw new Exception("Erreur lors de la Récupération des Cours : ". $e->getMessage());
+            }
+        }
+
+        // GET ALL COURSES WITH CATEGORY NAME AND TEACHER FULL NAME WITH PAGINATION
+        public function getCourses($status, $limit, $depart){
+            try{
+                $query = "SELECT Co.id_course,
+                                Co.titre,
+                                Co.description,
+                                Co.couverture,
+                                Co.contenu,
+                                Co.video,
+                                Co.niveau,
+                                Co.date_publication,
+                                Co.statut_cours,
+                                Ca.nom_categorie AS categorie,
+                                CONCAT(U.prenom, ' ', U.nom) AS enseignant,
+                                U.photo
+                            FROM 
+                                courses Co
+                            JOIN 
+                                categories Ca ON Co.id_categorie = Ca.id_categorie
+                            JOIN 
+                                users U ON Co.id_teacher = U.id_user
+                            WHERE
+                                Co.statut_cours = :statut
+                            ORDER BY
+                                Co.date_publication DESC, Co.id_course ASC
+                            LIMIT :limit OFFSET :offset";
+
+                $stmt = $this->database->prepare($query);
+                $stmt->bindValue(":statut", $status, PDO::PARAM_STR);
+                $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
+                $stmt->bindValue(":offset", $depart, PDO::PARAM_INT);
+                $stmt->execute();
+
+                if($stmt->rowCount() > 0){
+                    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }else{
+                    return false;
+                }
+            }catch(PDOException $e){
+                throw new Exception("Erreur lors de la récupération des cours : " . $e->getMessage());
             }
         }
 
@@ -133,6 +180,7 @@
                                 Co.statut_cours,
                                 Ca.nom_categorie AS categorie,
                                 CONCAT(U.prenom, ' ', U.nom) AS enseignant
+                                U.photo
                             FROM 
                                 courses Co
                             JOIN 
@@ -245,7 +293,7 @@
 
 
         // COUNT ALL COURSES
-        public function countCourses(){
+        public function countAllCourses(){
             try{
                 $query = 'SELECT COUNT(*) AS nbr_courses FROM courses';
                 $stmt = $this->database->prepare($query);
@@ -314,5 +362,21 @@
                 throw new Exception("Erreur lors de la récupération des 3 derniers cours publiés par l'enseignant : " . $e->getMessage());
             }
         }
+
+
+        // COUNT COURSES BY STATUS
+        public function countCourse($status){
+            try{
+                $query = "SELECT COUNT(*) AS total FROM courses WHERE statut_cours = :statut";
+                $stmt = $this->database->prepare($query);
+                $stmt->bindValue(":statut", $status, PDO::PARAM_STR);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                return $result['total'];
+            }catch(PDOException $e){
+                throw new Exception("Erreur lors du comptage des cours : " . $e->getMessage());
+            }
+        }
+        
         
     }
