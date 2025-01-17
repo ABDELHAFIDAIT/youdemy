@@ -377,6 +377,84 @@
                 throw new Exception("Erreur lors du comptage des cours : " . $e->getMessage());
             }
         }
+
+
+
+        //
+        public function getUnsubscribedCourses($id_etudiant, $status, $limit, $offset) {
+            try {
+                $query = "SELECT 
+                            Co.id_course,
+                            Co.titre,
+                            Co.description,
+                            Co.couverture,
+                            Co.contenu,
+                            Co.video,
+                            Co.niveau,
+                            Co.date_publication,
+                            Co.statut_cours,
+                            Ca.nom_categorie AS categorie,
+                            CONCAT(U.prenom, ' ', U.nom) AS enseignant,
+                            U.photo
+                        FROM 
+                            courses Co
+                        JOIN 
+                            categories Ca ON Co.id_categorie = Ca.id_categorie
+                        JOIN 
+                            users U ON Co.id_teacher = U.id_user
+                        WHERE 
+                            Co.statut_cours = :statut
+                            AND Co.id_course NOT IN (
+                                SELECT id_course 
+                                FROM enrollments 
+                                WHERE id_student = :id_etudiant
+                            )
+                        ORDER BY 
+                            Co.date_publication DESC, Co.id_course ASC
+                        LIMIT :limit OFFSET :offset";
+        
+                $stmt = $this->database->prepare($query);
+                $stmt->bindValue(":statut", $status, PDO::PARAM_STR);
+                $stmt->bindValue(":id_etudiant", $id_etudiant, PDO::PARAM_INT);
+                $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
+                $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
+                $stmt->execute();
+        
+                if ($stmt->rowCount() > 0) {
+                    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la récupération des cours : " . $e->getMessage());
+            }
+        }
+
+
+        //
+        public function countUnsubscribedCourses($id_etudiant, $status) {
+            try {
+                $query = "SELECT COUNT(*) AS total 
+                          FROM courses Co
+                          WHERE Co.statut_cours = :statut
+                            AND Co.id_course NOT IN (
+                                SELECT id_course 
+                                FROM enrollments 
+                                WHERE id_student = :id_etudiant
+                            )";
+        
+                $stmt = $this->database->prepare($query);
+                $stmt->bindValue(":statut", $status, PDO::PARAM_STR);
+                $stmt->bindValue(":id_etudiant", $id_etudiant, PDO::PARAM_INT);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                return $result['total'];
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors du comptage des cours non inscrits : " . $e->getMessage());
+            }
+        }
+        
+        
         
         
     }

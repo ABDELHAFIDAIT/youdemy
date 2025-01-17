@@ -29,6 +29,7 @@
         }
     }
 
+    $id_etudiant = $_SESSION['id_user'];
 
     $limit = 3;
 
@@ -40,9 +41,9 @@
 
     $depart = ($page - 1) * $limit;
 
-    $courses = $cours->getCourses('Approuvé', $limit, $depart);
+    $courses = $cours->getUnsubscribedCourses($id_etudiant,'Approuvé', $limit, $depart);
 
-    $totalCourses = $cours->countCourse('Approuvé');
+    $totalCourses = $cours->countUnsubscribedCourses($id_etudiant,'Approuvé');
     $totalPages = ceil($totalCourses / $limit);
 ?>
 
