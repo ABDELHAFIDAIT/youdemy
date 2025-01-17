@@ -1,4 +1,4 @@
-<?php
+<button?php
 
     session_start();
 
@@ -68,8 +68,8 @@
                 <a href="categories.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Catégories</a>
                 <a href="courses.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Cours</a>
                 <a href="contact.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Contact</a>
-                <a href="my_courses.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Connexion</a>
-                <a href="../guest" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Inscription</a>
+                <a href="my_courses.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Mes Cours</a>
+                <button name="disconnect" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Déconnexion</button>
             </div>
         </nav>
         

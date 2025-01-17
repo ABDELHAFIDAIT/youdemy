@@ -39,16 +39,16 @@
     <header>
         <!-- Navbar Section -->
         <nav class="px-5 py-3 flex items-center justify-between gap-5 shadow-md bg-white bg-opacity-90 shadow-lg fixed w-full z-50">
-            <a href="#" class="flex items-center gap-1">
+            <a href="../student/" class="flex items-center gap-1">
                 <img class="w-14" src="../../assets/img/logo.png" alt="Logo de Youdemy Plateforme">
                 <h1 class="text-2xl font-semibold">You<span class="text-blue-800">Demy</span></h1>
             </a>
             <div class="hidden lg:flex items-center justify-between gap-20">
                 <ul class="flex items-center gap-10 text-md">
-                    <a href="#"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Accueil</li></a>
+                    <a href="../student/"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Accueil</li></a>
                     <a href="categories.php"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Catégories</li></a>
                     <a href="courses.php"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Cours</li></a>
-                    <a href="contact.php"><li class="active cursor-pointer duration-300">Contact</li></a>
+                    <a href="#"><li class="active cursor-pointer duration-300">Contact</li></a>
                     <a href="my_courses.php"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Mes Cours</li></a>
                 </ul>
                 <form method="POST" class="flex gap-3">
@@ -61,12 +61,14 @@
                 </button>
             </div>
             <div class="bg-white mobile-menu hidden lg:hidden absolute left-0 top-[70px] flex-1 w-full">
-                <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Accueil</a>
-                <a href="categories.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Catégories</a>
+                <a href="../student/" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Accueil</a>
+                <a href="courses.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Catégories</a>
                 <a href="courses.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Cours</a>
-                <a href="contact.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Contact</a>
-                <a href="my_courses.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Connexion</a>
-                <a href="../guest" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Inscription</a>
+                <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Contact</a>
+                <a href="my_courses.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Mes Cours</a>
+                <form method="POST">
+                    <button name="disconnect" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Déconnexion</button>
+                </form>
             </div>
         </nav>
     </header>
