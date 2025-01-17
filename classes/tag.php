@@ -92,5 +92,25 @@
                 throw new Exception("Erreur Lors de la Modification du Tag : ". $e->getMessage());
             }
         }
+
+        public function showCourseTags($id){
+            try {
+                $sql = "SELECT nom_tag
+                        FROM tags T 
+                            JOIN courses_tags CT ON T.id_tag = CT.id_tag
+                        WHERE CT.id_course = :id";
+                $stmt = $this->database->prepare($sql);
+                $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                $stmt->execute();
+                if($stmt->rowCount()>0){
+                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    return $result;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreurs Lors de La récupération des Tags : ". $e->getMessage());
+            }
+        }
         
     }

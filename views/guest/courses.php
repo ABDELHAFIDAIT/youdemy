@@ -3,8 +3,11 @@
     session_start();
 
     require_once '../../classes/course.php';
+    require_once '../../classes/tag.php';
 
     $cours = new Course('','','','','','','');
+    $tg = new Tag('');
+
 
     if (isset($_SESSION["role"])){
         if($_SESSION['role'] === 'Admin'){
@@ -122,6 +125,12 @@
                         <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-xs"><?php echo $course['categorie'] ?></span>
                         <span class="ml-2 text-gray-500 text-sm">•</span>
                         <span class="ml-2 text-gray-500 text-sm"><?php echo $course['niveau'] ?></span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 py-2">
+                        <?php $tags = $tg->showCourseTags($course['id_course']);
+                        foreach($tags as $tag){ ?>
+                        <span class="text-white bg-blue-500 px-2 text-xs rounded-full"># <?php echo $tag['nom_tag'] ?></span>
+                        <?php } ?>
                     </div>
                     <h3 class="text-xl font-bold mb-2"><?php echo $course['titre'] ?></h3>
                     <p class="text-gray-600 mb-4 line-clamp-2"><?php echo $course['description'] ?></p>
