@@ -5,18 +5,25 @@
 
     $category = new Categorie('','');
 
-    if (isset($_SESSION["role"])){
-        if($_SESSION['role'] === 'Admin'){
+    if ($_SESSION['role'] !== 'Etudiant') {
+        if ($_SESSION['role'] === 'Admin') {
             header("Location: ../admin/dashboard.php");
-        }else if($_SESSION['role'] === 'Enseignant'){
+        } else if ($_SESSION['role'] === 'Enseignant') {
             header("Location: ../teacher/dashboard.php");
-        }else{
-            header("Location: ../student");
+        } else {
+            header("Location: ../guest");
         }
         exit;
     }
 
-
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if(isset($_POST['disconnect'])) {
+            session_unset();
+            session_destroy();
+            header("Location: ../guest");
+            exit();
+        }
+    }
 
 ?>
 
@@ -35,25 +42,21 @@
     <header>
         <!-- Navbar Section -->
         <nav class="px-5 py-3 flex items-center justify-between gap-5 shadow-md bg-white bg-opacity-90 shadow-lg fixed w-full z-50">
-            <a href="../guest/" class="flex items-center gap-1">
+            <a href="#" class="flex items-center gap-1">
                 <img class="w-14" src="../../assets/img/logo.png" alt="Logo de Youdemy Plateforme">
                 <h1 class="text-2xl font-semibold">You<span class="text-blue-800">Demy</span></h1>
             </a>
             <div class="hidden lg:flex items-center justify-between gap-20">
                 <ul class="flex items-center gap-10 text-md">
-                    <a href="../guest/"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Accueil</li></a>
+                    <a href="index.php"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Accueil</li></a>
                     <a href="#"><li class="active cursor-pointer duration-300">Catégories</li></a>
                     <a href="courses.php"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Cours</li></a>
                     <a href="contact.php"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Contact</li></a>
+                    <a href="my_courses.php"><li class="cursor-pointer duration-300 hover:text-blue-600 hover:font-medium hover:border-b-2 hover:border-blue-600 hover:pb-3">Mes Cours</li></a>
                 </ul>
-                <div class="flex gap-3">
-                    <a href="../auth/login.php">
-                        <button class="rounded-sm py-1 px-5 border border-black text-md duration-500 hover:text-white hover:bg-blue-700 hover:border-blue-500">Connexion</button>
-                    </a>
-                    <a href="../auth/register.php">
-                        <button class="rounded-sm py-1 px-5 border border-blue-500 text-md text-white bg-blue-600 duration-500 hover:bg-blue-900 hover:border-blue-900">Inscription</button>
-                    </a>
-                </div>
+                <form method="POST" class="flex gap-3">
+                    <button name="disconnect" class="rounded-sm py-1 px-5 border border-blue-500 text-md text-white bg-blue-600 duration-500 hover:bg-blue-900 hover:border-blue-900">Déconnexion</button>
+                </form>
             </div>
             <div class="lg:hidden flex items-center">
                 <button class="mobile-menu-button">
@@ -61,12 +64,12 @@
                 </button>
             </div>
             <div class="bg-white mobile-menu hidden lg:hidden absolute left-0 top-[70px] flex-1 w-full">
-                <a href="../guest/" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Accueil</a>
-                <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Catégories</a>
+                <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Accueil</a>
+                <a href="categories.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Catégories</a>
                 <a href="courses.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Cours</a>
                 <a href="contact.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Contact</a>
-                <a href="../auth/login.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Connexion</a>
-                <a href="../auth/register.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Inscription</a>
+                <a href="my_courses.php" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Connexion</a>
+                <a href="../guest" class="block py-2 px-4 text-sm hover:bg-blue-600 hover:text-white">Inscription</a>
             </div>
         </nav>
 

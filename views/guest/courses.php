@@ -15,7 +15,7 @@
         }else if($_SESSION['role'] === 'Enseignant'){
             header("Location: ../teacher/dashboard.php");
         }else{
-            header("Location: ../student/courses.php");
+            header("Location: ../student");
         }
         exit;
     }

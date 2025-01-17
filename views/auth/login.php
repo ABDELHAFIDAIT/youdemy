@@ -15,7 +15,7 @@
         }else if($_SESSION['role'] === 'Enseignant'){
             header("Location: ../teacher/dashboard.php");
         }else{
-            header("Location: ../student/courses.php");
+            header("Location: ../student/");
         }
         exit;
     }
@@ -49,7 +49,7 @@
                         } else if($_SESSION['role'] === 'Enseignant'){
                             header("Location: ../teacher/dashboard.php");
                         } else if($_SESSION['role'] === 'Etudiant'){
-                            header("Location: ../student/courses.php");
+                            header("Location: ../student");
                         }
                         exit;
                     }else if($loggedInUser->getStatus() == 'Bloqué'){
