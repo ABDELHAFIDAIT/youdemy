@@ -136,7 +136,7 @@
                     <p class="text-gray-600 mb-4 line-clamp-2"><?php echo $course['description'] ?></p>
                     <div class="flex items-center mb-4">
                         <img src="../../uploads/<?php echo $course['photo'] ?>" alt="Instructor" class="w-8 h-8 rounded-full">
-                        <span class="ml-2 text-gray-600"><?php echo $course['enseignant'] ?></span>
+                        <span class="ml-2 text-gray-600"><?php echo $course['prenom'].' '.$course['nom'] ?></span>
                     </div>
                     <div class="flex items-center justify-center">
                         <a href="../auth/login.php" class="w-full">
