@@ -48,17 +48,19 @@
                 Ne vous inquiétez pas, nous pouvons vous aider à retrouver votre chemin.
             </p>
             <?php
+
+            session_start();
             
             if(isset($_SESSION['id_user']) && isset($_SESSION['role'])){
                 if($_SESSION['role'] == 'Admin'){
-                    $path = './views/admin/dashboard.php';
+                    $path = '../admin/dashboard.php';
                 }else if($_SESSION['role'] == 'Enseignant'){
-                    $path = './views/teacher/dashboard.php';
+                    $path = '../teacher/dashboard.php';
                 }else if($_SESSION['role'] == 'Etudiant'){
-                    $path = './views/student/index.php';
+                    $path = '../student/index.php';
                 }
             }else{
-                $path = '../youdemy/';
+                $path = '../../index.php';
             }
             
             ?>
