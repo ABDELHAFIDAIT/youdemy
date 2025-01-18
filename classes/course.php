@@ -36,7 +36,7 @@
         public function getDescription():string{
             return $this->description;
         }
-        public function getContenu():string{
+        public function getContenu():string | NULL{
             return $this->contenu;
         }
         public function getVideo():string{
@@ -179,8 +179,9 @@
                                 Co.niveau,
                                 Co.date_publication,
                                 Co.statut_cours,
-                                Ca.nom_categorie AS categorie,
-                                CONCAT(U.prenom, ' ', U.nom) AS enseignant
+                                Ca.nom_categorie,
+                                U.prenom,
+                                U.nom,
                                 U.photo
                             FROM 
                                 courses Co
