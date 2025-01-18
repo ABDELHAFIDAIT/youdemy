@@ -30,17 +30,19 @@
             header("Location: ../guest");
             exit();
         }
-    }
-
-    if($_SERVER['REQUEST_METHOD'] === 'POST'){
-        if(isset($_POST['subscribe'])) {
-            $course = $_GET['id'];
-            $student = $_SESSION['id_user'];
-            $subscribe = $etudiant->subscribeToCourse($course,$student);
-            if($subscribe) {
-                header('Location : ./my_courses.php');
-            }else{
-                echo '<script>alert("Erreur lors de l\'inscrption à ce cours !");</script>';
+        else if(isset($_POST['subscribe'])) {
+            try {
+                $course = $_POST['id_course'];
+                $student = $_SESSION['id_user'];
+                $subscribe = $etudiant->subscribeToCourse($student, $course);
+                if ($subscribe) {
+                    header('Location: ./my_courses.php');
+                    exit();
+                } else {
+                    echo '<script>alert("Erreur lors de l\'inscription à ce cours !");</script>';
+                }
+            } catch (Exception $e) {
+                echo '<script>alert("Une erreur est survenue : ' . $e->getMessage() . '");</script>';
             }
         }
     }
