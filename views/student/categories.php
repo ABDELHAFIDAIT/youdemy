@@ -96,17 +96,20 @@
 
             if(is_array($categories)){
                 foreach($categories as $categorie) {
-                    if($categorie['total_approved_courses'] != 0){ ?>
+                    $category->setName($categorie['categorie']);
+                    $category->setDescription($categorie['description']);
+                    $courses = $categorie['total_approved_courses'];
+                    if($courses){ ?>
 
                     <div class="category-card bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                     <div class="relative h-48 bg-<?php echo $color[$index]; ?>">
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <i class="text-white text-3xl"><?php echo $categorie['total_approved_courses']; ?> Cours</i>
+                            <i class="text-white text-3xl"><?php echo $courses; ?> Cours</i>
                         </div>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-2"><?php echo $categorie['categorie']; ?></h3>
-                        <p class="text-gray-600 mb-4"><?php echo $categorie['description']; ?></p>
+                        <h3 class="text-2xl font-bold mb-2"><?php echo $category->getName(); ?></h3>
+                        <p class="text-gray-600 mb-4"><?php echo $category->getDescription(); ?></p>
                         <a href="courses.php" class="inline-block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
                             Explorer les cours
                         </a>
