@@ -141,7 +141,6 @@
             <?php 
             if (is_array($courses)) {
                 foreach ($courses as $course) {
-                    // Instanciation des objets
                     $cour = new Course(
                         $course['titre'],
                         $course['description'],

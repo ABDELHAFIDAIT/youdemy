@@ -38,6 +38,8 @@
                             Co.couverture,
                             Co.niveau,
                             Co.contenu,
+                            Co.video,
+                            Co.statut_cours,
                             Ca.nom_categorie,
                             U.prenom,
                             U.nom,
