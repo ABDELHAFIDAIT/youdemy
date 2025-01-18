@@ -4,14 +4,14 @@
 
     class Course {
         private int $id;
-        private string $titre;
-        private string $description;
-        private string $couverture;
-        private string $contenu;
-        private string $video;
-        private string $status;
-        private string $date;
-        private string $niveau;
+        private string | null $titre;
+        private string | null $description;
+        private string | null $couverture;
+        private string | null $contenu;
+        private string | null $video;
+        private string | null $status;
+        private string | null $date;
+        private string | null $niveau;
         private $database;
 
         public function __construct($titre,$description,$couverture,$contenu,$video,$statut,$niveau) {
@@ -42,7 +42,7 @@
         public function getVideo():string{
             return $this->video;
         }
-        public function getCouvertur():string{
+        public function getCouverture():string{
             return $this->couverture;
         }
         public function getStatus():string{
@@ -135,7 +135,8 @@
                                 Co.date_publication,
                                 Co.statut_cours,
                                 Ca.nom_categorie AS categorie,
-                                CONCAT(U.prenom, ' ', U.nom) AS enseignant,
+                                U.prenom,
+                                U.nom,
                                 U.photo
                             FROM 
                                 courses Co
@@ -394,7 +395,8 @@
                             Co.date_publication,
                             Co.statut_cours,
                             Ca.nom_categorie AS categorie,
-                            CONCAT(U.prenom, ' ', U.nom) AS enseignant,
+                            U.prenom, 
+                            U.nom,
                             U.photo
                         FROM 
                             courses Co

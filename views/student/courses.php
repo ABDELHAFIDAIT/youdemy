@@ -4,10 +4,13 @@
 
     require_once '../../classes/course.php';
     require_once '../../classes/tag.php';
+    require_once '../../classes/student.php';
+    require_once '../../classes/teacher.php';
+    require_once '../../classes/category.php';
 
     $cours = new Course('','','','','','','');
     $tg = new Tag('');
-
+    $etudiant = new Student('','','','','','','','');
 
     if ($_SESSION['role'] !== 'Etudiant') {
         if ($_SESSION['role'] === 'Admin') {
@@ -26,6 +29,19 @@
             session_destroy();
             header("Location: ../guest");
             exit();
+        }
+    }
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if(isset($_POST['subscribe'])) {
+            $course = $_GET['id'];
+            $student = $_SESSION['id_user'];
+            $subscribe = $etudiant->subscribeToCourse($course,$student);
+            if($subscribe) {
+                header('Location : ./my_courses.php');
+            }else{
+                echo '<script>alert("Erreur lors de l\'inscrption à ce cours !");</script>';
+            }
         }
     }
 
@@ -121,45 +137,75 @@
     <main class="py-10 px-5">
         <section class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             <?php 
-            if(is_array($courses)){
-                foreach($courses as $course){
+            if (is_array($courses)) {
+                foreach ($courses as $course) {
+                    // Instanciation des objets
+                    $cour = new Course(
+                        $course['titre'],
+                        $course['description'],
+                        $course['couverture'],
+                        $course['contenu'],
+                        $course['video'],
+                        $course['statut_cours'],
+                        $course['niveau']
+                    );
+
+                    $teacher = new Teacher(
+                        $course['nom'],
+                        $course['prenom'],
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        $course['photo']
+                    );
+
+                    $ctg = new Categorie(
+                        $course['categorie'],
+                        ''
+                    );
             ?>
             <div class="course-card bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
                 <div class="relative">
-                    <img src="../../uploads/<?php echo $course['couverture'] ?>" alt="Course" class="w-full h-48 object-cover">
+                    <img src="../../uploads/<?php echo htmlspecialchars($cour->getCouverture()); ?>" alt="Course" class="w-full h-48 object-cover">
                 </div>
                 <div class="p-6">
                     <div class="flex items-center mb-2">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-xs"><?php echo $course['categorie'] ?></span>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-xs"><?php echo htmlspecialchars($ctg->getName()); ?></span>
                         <span class="ml-2 text-gray-500 text-sm">•</span>
-                        <span class="ml-2 text-gray-500 text-sm"><?php echo $course['niveau'] ?></span>
+                        <span class="ml-2 text-gray-500 text-sm"><?php echo htmlspecialchars($cour->getNiveau()); ?></span>
                     </div>
                     <div class="flex flex-wrap items-center gap-3 py-2">
-                        <?php $tags = $tg->showCourseTags($course['id_course']);
-                        foreach($tags as $tag){ ?>
-                        <span class="text-white bg-blue-500 px-2 text-xs rounded-full"># <?php echo $tag['nom_tag'] ?></span>
+                        <?php 
+                        $tags = $tg->showCourseTags($course['id_course']);
+                        foreach ($tags as $tag) { ?>
+                            <span class="text-white bg-blue-500 px-2 text-xs rounded-full"># <?php echo htmlspecialchars($tag['nom_tag']); ?></span>
                         <?php } ?>
                     </div>
-                    <h3 class="text-xl font-bold mb-2"><?php echo $course['titre'] ?></h3>
-                    <p class="text-gray-600 mb-4 line-clamp-2"><?php echo $course['description'] ?></p>
+                    <h3 class="text-xl font-bold mb-2"><?php echo htmlspecialchars($cour->getTitre()); ?></h3>
+                    <p class="text-gray-600 mb-4 line-clamp-2"><?php echo htmlspecialchars($cour->getDescription()); ?></p>
                     <div class="flex items-center mb-4">
-                        <img src="../../uploads/<?php echo $course['photo'] ?>" alt="Instructor" class="w-8 h-8 rounded-full">
-                        <span class="ml-2 text-gray-600"><?php echo $course['enseignant'] ?></span>
+                        <img src="../../uploads/<?php echo htmlspecialchars($teacher->getPhoto()); ?>" alt="Instructor" class="w-8 h-8 rounded-full">
+                        <span class="ml-2 text-gray-600"><?php echo htmlspecialchars($teacher->getPrenom() . ' ' . $teacher->getNom()); ?></span>
                     </div>
                     <div class="flex items-center justify-center">
-                        <a href="../auth/login.php" class="w-full">
-                            <button type="button" class="font-medium text-white bg-blue-600 w-full py-1 rounded-md hover:bg-blue-800">S'inscrire</button>
-                        </a>
+                        <form method="POST" action="" class="w-full">
+                            <input type="hidden" name="id_course" value="<?php echo htmlspecialchars($course['id_course']); ?>">
+                            <button name="subscribe" type="submit" class="font-medium text-white bg-blue-600 w-full py-1 rounded-md hover:bg-blue-800">S'inscrire</button>
+                        </form>
                     </div>
                 </div>
             </div>
             <?php
                 }
-            }else{
+            } else {
                 echo "<p class='text-center col-span-3 font-semibold text-3xl text-red-600 animate-bounce mt-5'>Aucun cours disponible pour le moment.</p>";
             }
             ?>
         </section>
+
+
 
         <section class="flex justify-center mt-10">
             <?php if ($page > 1): ?>

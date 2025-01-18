@@ -53,7 +53,7 @@
                     echo '<script>alert("Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.")</script>';
                     break;
                 default :
-                    $user = new User($nom,$prenom,$phone,$email,$password,$role,"");
+                    $user = new User($nom,$prenom,$phone,$email,$password,$role,"","");
                     $user->register($user->getNom(), $user->getPrenom(), $user->getTelephone(), $user->getEmail(), $user->getPassword(), $user->getRole());
                     header("location: ./login.php");
                     break;

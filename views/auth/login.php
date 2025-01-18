@@ -29,7 +29,7 @@
                 $alert =  '<script>alert("Veuillez remplir tous les champs.")</script>';
                 echo $alert ;
             } else {
-                $user = new User("","","",$email,$password,"","");
+                $user = new User("","","",$email,$password,"","","");
     
                 $loggedInUser = $user->login((string)$user->getEmail(), (string)$user->getPassword());
     

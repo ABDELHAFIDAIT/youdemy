@@ -3,18 +3,18 @@ require_once __DIR__ . './../config/db.php';
 require_once __DIR__ . './../config/validator.php';
 
 class User {
-    protected int $id;
-    protected string $nom;
-    protected string $prenom;
-    protected string $telephone;
-    protected string $email;
-    protected string $password;
-    protected string $role;
-    protected string $photo;
-    protected string $status;
+    protected int | null $id;
+    protected string | null $nom;
+    protected string | null $prenom;
+    protected string | null $telephone;
+    protected string | null $email;
+    protected string | null $password;
+    protected string | null $role;
+    protected string | null $photo;
+    protected string | null $status;
     protected $database;
 
-    public function __construct($nom,$prenom,$telephone,$email,$password,$role,$status) {
+    public function __construct($nom,$prenom,$telephone,$email,$password,$role,$status,$photo) {
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->telephone = $telephone;
@@ -22,6 +22,7 @@ class User {
         $this->password = $password;
         $this->role = $role;
         $this->status = $status;
+        $this->photo = $photo;
         $this->database = Database::getInstance()->getConnection();
     }
 
