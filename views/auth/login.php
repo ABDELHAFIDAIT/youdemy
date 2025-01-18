@@ -53,7 +53,7 @@
                         }
                         exit;
                     }else if($loggedInUser->getStatus() == 'Bloqué'){
-                        echo '<script>alert("Votre Compte est Banné !")</script>';
+                        echo '<script>alert("Votre Compte est Bloqué pour le Moment !")</script>';
                     }else{
                         echo '<script>alert("Votre Compte n\'est pas encore Confirmé !")</script>';
                     }
