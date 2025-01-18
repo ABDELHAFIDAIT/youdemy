@@ -26,7 +26,6 @@
     if(isset($_GET['id'])){
         $id_course = $_GET['id'];
         $course = $cours->getCourse($id_course);
-        // var_dump($course['contenu']);
     }
 
 ?>
