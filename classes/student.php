@@ -37,9 +37,11 @@
                             Co.description,
                             Co.couverture,
                             Co.niveau,
+                            Co.contenu,
                             Ca.nom_categorie,
-                            U.prenom AS teacher_prenom,
-                            U.nom AS teacher_nom
+                            U.prenom,
+                            U.nom,
+                            U.photo
                         FROM enrollments E
                         INNER JOIN courses Co ON E.id_course = Co.id_course
                         INNER JOIN categories Ca ON Co.id_categorie = Ca.id_categorie

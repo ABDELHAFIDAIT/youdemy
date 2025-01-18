@@ -181,8 +181,9 @@
                     <div class="flex flex-wrap items-center gap-3 py-2">
                         <?php 
                         $tags = $tg->showCourseTags($course['id_course']);
-                        foreach ($tags as $tag) { ?>
-                            <span class="text-white bg-blue-500 px-2 text-xs rounded-full"># <?php echo htmlspecialchars($tag['nom_tag']); ?></span>
+                        foreach ($tags as $tag) {
+                            $tg->setNom($tag['nom_tag']) ?>
+                            <span class="text-white bg-blue-500 px-2 text-xs rounded-full"># <?php echo htmlspecialchars($tg->getNom()) ?></span>
                         <?php } ?>
                     </div>
                     <h3 class="text-xl font-bold mb-2"><?php echo htmlspecialchars($cour->getTitre()); ?></h3>
