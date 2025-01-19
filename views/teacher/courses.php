@@ -11,6 +11,7 @@
 
     $enseignant = new Teacher((int)$_SESSION['id_user'],$_SESSION['nom'],$_SESSION['prenom'],'',$_SESSION['email'],'',$_SESSION['role'],$_SESSION['status'],$_SESSION['photo']);
 
+    $new_cour = new Course('','','','','','','');
 
     if ($_SESSION['role'] !== 'Enseignant') {
         if ($_SESSION['role'] === 'Admin') {
@@ -29,6 +30,15 @@
             session_destroy();
             header("Location: ../guest");
             exit();
+        }
+        if(isset($_POST["delete"])) {
+            $course = $_POST['course'];
+            $delete = $new_cour->deleteCourse($course);
+            if($delete) {
+                echo '<script>alert("Cours Supprimé avec Succés !")</script>';
+            } else {
+                echo '<script>alert("Cours Non Supprimé !")</script>';
+            }
         }
     }
 
@@ -144,12 +154,12 @@
                 
                 <div class="flex flex-wrap items-center justify-end gap-3 px-4 text-sm mt-5">
                     <a href="details.php?id=<?php echo $course['id_course'] ?>">
-                        <button class="py-1 px-4 text-white bg-green-600 rounded-sm">Consulter</button>
+                        <i class="fa-solid fa-eye text-xl text-green-600 "></i>
                     </a>
-                    <button class="py-1 px-4 text-white bg-blue-600 rounded-sm">Modifier</button>
+                    <i class="fa-solid fa-file-pen text-xl text-blue-600"></i>
                     <form method="POST" action="">
                         <input type="hidden" name="course" value="<?php echo $course['id_course'] ?>">
-                        <button name="delete"class="py-1 px-4 text-white bg-red-600 rounded-sm">Supprimer</button>
+                        <button name="delete"><i class="fa-solid fa-trash text-xl text-red-600"></i></button>
                     </form>
                 </div>
                 <?php 
