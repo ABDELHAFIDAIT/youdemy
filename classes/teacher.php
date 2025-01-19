@@ -9,6 +9,34 @@
             $this->id = $id;
         }
 
+        // DISPLAY COURSES
+        public function displayCourses($id_teacher){
+            try {
+                $query = "SELECT 
+                            courses.id_course,
+                            courses.titre,
+                            courses.description,
+                            courses.contenu,
+                            courses.video,
+                            courses.couverture,
+                            courses.niveau,
+                            courses.date_publication,
+                            courses.statut_cours,
+                            categories.nom_categorie
+                        FROM courses
+                        JOIN categories ON courses.id_categorie = categories.id_categorie
+                        WHERE courses.id_teacher = :id_teacher
+                        ORDER BY courses.date_publication DESC";
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(':id_teacher', $id_teacher, PDO::PARAM_INT);
+                $stmt->execute();
+                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                return $results;
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la Récupération des Cours : " . $e->getMessage());
+            }
+        }
+
         // COUNT MY COURSES
         public function countCourses($id_teacher,$status){
             try {
@@ -48,7 +76,7 @@
             try {
                 $query = "SELECT categories.nom_categorie, COUNT(courses.id_course) AS course_count
                         FROM courses
-                        INNER JOIN categories ON courses.id_categorie = categories.id_categorie
+                        JOIN categories ON courses.id_categorie = categories.id_categorie
                         WHERE courses.id_teacher = :id_teacher
                         GROUP BY categories.nom_categorie";
                 $stmt = $this->database->prepare($query);
