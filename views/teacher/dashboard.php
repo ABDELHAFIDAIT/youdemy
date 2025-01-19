@@ -29,10 +29,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <header class="px-5 py-3 bg-white shadow-md">
+    <header class="px-5 py-3 bg-white shadow-md fixed w-full">
         <nav class="flex items-center justify-between gap-5">
             <div class="flex items-center gap-6">
-                <div>
+                <div id="burger-menu">
                     <i class="fa-solid fa-bars text-2xl cursor-pointer"></i>
                 </div>
                 <div class="flex items-center gap-1">
@@ -41,12 +41,11 @@
                 </div>
             </div>
             <div class="flex items-center gap-6">
-                <!-- <a href="#">Déconnexion</a> -->
                 <a href="#"><img class="w-14 rounded-full border-4 border-blue-500" src="../../uploads/<?php echo $_SESSION['photo'] ?>" alt=""></a>
             </div>
         </nav>
 
-        <section id="links" style="height: calc(100vh - 80px); top: 80px; left: 0;" class="absolute transition-all ease-in w-64 bg-white shadow-md py-8 flex flex-col justify-between">
+        <section id="links" style="height: calc(100vh - 80px);" class="z-10 absolute top-[80px] left-[-500px] transition-all ease-in duration-500 w-64 bg-white shadow-md py-8 flex flex-col justify-between">
             <div class="flex flex-col items-center justify-center gap-2">
                 <img class="w-1/3 rounded-full border-4 border-white" src="../../uploads/<?php echo $_SESSION['photo'] ?>" alt="">
                 <h1 class="font-semibold mt-2"><?php echo $_SESSION['prenom'].' '.$_SESSION['nom'] ?></h1>
@@ -63,7 +62,7 @@
                 </a>
             </div>
             <form>
-                <button class="flex items-center gap-3 duration-300 hover:bg-gray-200 w-full pl-5 hover:border-r-4 hover:border-gray-400 py-3">
+                <button name="disconnect" class="flex items-center gap-3 duration-300 hover:bg-gray-200 w-full pl-5 hover:border-r-4 hover:border-gray-400 py-3">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     <p>Déconnexion</p>
                 </button>
@@ -78,11 +77,13 @@
 
     <script src="../../assets/js/main.js"></script>
     <script>
-        function Menu(e){
             let list = document.querySelector('#links');
+            const menu = document.querySelector('#burger-menu');
 
-            e.name === 'menu' ? (e.name = "close", list.classList.add('left-0'), list.classList.add('opacity-100'), document.body.classList.add('overflow-hidden')) : (e.name = "menu" ,list.classList.remove('left-0'), list.classList.remove('opacity-100'), document.body.classList.remove('overflow-hidden'))
-        }
+            menu.addEventListener('click',function(){
+                list.classList.toggle('left-0');
+                list.classList.toggle('left-[-500px]');
+            });
     </script>
 </body>
 </html>
