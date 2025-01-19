@@ -58,7 +58,7 @@
                     <p>Statistiques</p>
                 </a>
                 <a href="#" class="flex items-center gap-3 duration-300 hover:bg-gray-200 w-full pl-5 hover:border-r-4 hover:border-gray-400 py-3">
-                    <i class="fa-solid fa-book-open"></i>
+                    <i class="fa-solid fa-book-open "></i>
                     <p>Mes Cours</p>
                 </a>
             </div>
