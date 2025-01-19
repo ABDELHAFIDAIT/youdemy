@@ -61,6 +61,24 @@
             }
         }
 
+        // LAST 3 COURSES
+        public function lastCourses($id_teacher){
+            try {
+                $query = "SELECT titre, couverture, statut_cours, date_publication
+                        FROM courses
+                        WHERE id_teacher = :id_teacher
+                        ORDER BY date_publication DESC
+                        LIMIT 3";
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(':id_teacher', $id_teacher, PDO::PARAM_INT);
+                $stmt->execute();
+                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                return $results;
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la Récupération des Derniers Cours : " . $e->getMessage());
+            }
+        }
+
     }
 
 ?>

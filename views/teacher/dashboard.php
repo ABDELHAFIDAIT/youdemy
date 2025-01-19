@@ -4,6 +4,8 @@
 
     require_once "../../classes/teacher.php";
     require_once "../../classes/category.php";
+    require_once "../../classes/course.php";
+
 
 
     $enseignant = new Teacher((int)$_SESSION['id_user'],'','','','','','','','');
@@ -158,7 +160,7 @@
                         <div class="h-10 w-10 rounded-full text-xl text-blue-600 bg-blue-100 flex items-center justify-center">
                             <i class="fa-solid fa-thumbtack"></i>
                         </div>
-                        <h1 class="text-lg font-semibold"><?php echo $category->getName() ?></h1>
+                        <h1 class="text-lg font-medium"><?php echo $category->getName() ?></h1>
                     </div>
                     <div>
                         <p><?php echo $courses ?> Cours</p>
@@ -175,36 +177,43 @@
                     <h1>Cours Récents</h1>
                     <a href="#">Voir Plus <i class="fa-solid fa-arrow-right ml-3"></i></a>
                 </div>
+                <?php
+                    $courses = $enseignant->lastCourses($enseignant->getId());
+                    if($courses){
+                    foreach($courses as $course) {
+                        $cours = new Course($course['titre'], '',$course['couverture'],'','',$course['statut_cours'],'');
+                        $cours->setDate($course['date_publication']);
+                ?>
                 <div class="flex items-center bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                    <img src="../../uploads/course.png" alt="Article" class="h-16 w-24 rounded-lg object-cover">
+                    <img src="../../uploads/<?php echo $cours->getCouverture() ?>" alt="Article" class="h-16 w-24 rounded-lg object-cover">
                     <div class="ml-4 flex-1 flex flex-col justify-between">
-                        <h4 class="text-sm font-semibold text-gray-800">Titre</h4>
-                        <p class="text-sm text-gray-600">2025-01-19</p>
+                        <h4 class="text-sm font-semibold text-gray-800"><?php echo $cours->getTitre() ?></h4>
+                        <p class="text-sm text-gray-600"><?php echo $cours->getDate() ?></p>
                         <div class="flex items-center mt-1">
-                            <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Approuvé</span>
+                            <!-- <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full"><?php //echo $cours->getTitre() ?></span> -->
+                            <?php
+                            if ($cours->getStatus() == 'Approuvé') {
+                                echo '<span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">' . $cours->getStatus() . '</span>';
+                            } else if ($cours->getStatus() == 'En Attente') {
+                                echo '<span class="text-xs bg-yellow-100 text-yellow-600 px-2 py-1 rounded-full">' . $cours->getStatus() . '</span>';
+                            } else {
+                                echo '<span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">' . $cours->getStatus() . '</span>';
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
-                <div class="flex items-center bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                    <img src="../../uploads/course.png" alt="Article" class="h-16 w-24 rounded-lg object-cover">
-                    <div class="ml-4 flex-1 flex flex-col justify-between">
-                        <h4 class="text-sm font-semibold text-gray-800">Titre</h4>
-                        <p class="text-sm text-gray-600">2025-01-19</p>
-                        <div class="flex items-center mt-1">
-                            <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Approuvé</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                    <img src="../../uploads/course.png" alt="Article" class="h-16 w-24 rounded-lg object-cover">
-                    <div class="ml-4 flex-1 flex flex-col justify-between">
-                        <h4 class="text-sm font-semibold text-gray-800">Titre</h4>
-                        <p class="text-sm text-gray-600">2025-01-19</p>
-                        <div class="flex items-center mt-1">
-                            <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Approuvé</span>
-                        </div>
-                    </div>
-                </div>
+
+                <?php 
+                    }
+                    }else{
+                ?>
+                
+                <h1 class="text-red-600 font-semibold text-lg">Vous n'avez pas publié UN COURS pour le Moment !</h1>
+                
+                <?php 
+                    }
+                ?>
             </div>
         </section>
     </main>
