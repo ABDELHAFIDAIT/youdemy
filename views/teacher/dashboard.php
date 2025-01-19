@@ -79,10 +79,10 @@
                     <p>Mes Cours</p>
                 </a>
             </div>
-            <form>
+            <form method="POST" action="">
                 <button name="disconnect" class="flex items-center gap-3 duration-300 hover:bg-gray-200 w-full pl-5 hover:border-r-4 hover:border-gray-400 py-3">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    <p>Déconnexion</p>
+                    Déconnexion
                 </button>
             </form>
         </section>
