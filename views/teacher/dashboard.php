@@ -3,6 +3,7 @@
     session_start();
 
     require_once "../../classes/teacher.php";
+    require_once "../../classes/category.php";
 
 
     $enseignant = new Teacher((int)$_SESSION['id_user'],'','','','','','','','');
@@ -144,39 +145,29 @@
             <!-- Courses Per Category -->
             <div class="flex flex-col gap-5 lg:col-span-2 bg-white shadow-md hover:shadow-lg rounded-md px-10 py-7">
                 <h1 class="text-lg font-medium text-purple-600 mb-3">Répartition Par Catégorie</h1>
+
+                <?php 
+                    $counts = $enseignant->countCoursesPerCategory($enseignant->getId());
+                    foreach($counts as $count) {
+                        $courses = $count['course_count'];
+                        $category = new Categorie($count['nom_categorie'],'');
+                ?>
+
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-5">
                         <div class="h-10 w-10 rounded-full text-xl text-blue-600 bg-blue-100 flex items-center justify-center">
                             <i class="fa-solid fa-thumbtack"></i>
                         </div>
-                        <h1 class="text-lg font-semibold">Catégorie</h1>
+                        <h1 class="text-lg font-semibold"><?php echo $category->getName() ?></h1>
                     </div>
                     <div>
-                        <p>10 Cours</p>
+                        <p><?php echo $courses ?> Cours</p>
                     </div>
                 </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-5">
-                        <div class="h-10 w-10 rounded-full text-xl text-blue-600 bg-blue-100 flex items-center justify-center">
-                            <i class="fa-solid fa-thumbtack"></i>
-                        </div>
-                        <h1 class="text-lg font-semibold">Catégorie</h1>
-                    </div>
-                    <div>
-                        <p>10 Cours</p>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-5">
-                        <div class="h-10 w-10 rounded-full text-xl text-blue-600 bg-blue-100 flex items-center justify-center">
-                            <i class="fa-solid fa-thumbtack"></i>
-                        </div>
-                        <h1 class="text-lg font-semibold">Catégorie</h1>
-                    </div>
-                    <div>
-                        <p>10 Cours</p>
-                    </div>
-                </div>
+
+                <?php
+                    }
+                ?>
             </div>
             <!-- Last Courses -->
             <div class="flex flex-col gap-5 lg:col-span-2 bg-white shadow-md hover:shadow-lg rounded-md px-10 py-7">
@@ -216,8 +207,6 @@
                 </div>
             </div>
         </section>
-
-
     </main>
 
 

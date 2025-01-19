@@ -26,6 +26,7 @@
             }
         }
 
+        // COUNT ENROLLED STUDENTS IN MY COURSES
         public function countEnrolledStudents($id_teacher){
             try {
                 $query = "SELECT COUNT(DISTINCT enrollments.id_student) AS total_students
@@ -39,6 +40,24 @@
                 return $result['total_students'];
             } catch (PDOException $e) {
                 throw new Exception("Erreur lors de la Récupération du Nombre des Etudiants: " . $e->getMessage());
+            }
+        }
+
+        // COUNT COURSES PER CATEGORY
+        public function countCoursesPerCategory($id_teacher){
+            try {
+                $query = "SELECT categories.nom_categorie, COUNT(courses.id_course) AS course_count
+                        FROM courses
+                        INNER JOIN categories ON courses.id_categorie = categories.id_categorie
+                        WHERE courses.id_teacher = :id_teacher
+                        GROUP BY categories.nom_categorie";
+                $stmt = $this->database->prepare($query);
+                $stmt->bindParam(':id_teacher', $id_teacher, PDO::PARAM_INT);
+                $stmt->execute();
+                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                return $results;
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la Récupération du Nombre des Cours Par catégorie: " . $e->getMessage());
             }
         }
 
