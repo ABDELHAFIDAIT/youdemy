@@ -70,8 +70,127 @@
         </section>
     </header>
 
-    <main class="bg-gray-100 h-screen">
-        h
+    <main class="bg-gray-100 pt-24 pb-12 px-5">
+        <!-- Statistiques -->
+        <section class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <!-- Approved Courses -->
+            <div class="flex item-center gap-5 bg-white shadow-md hover:shadow-lg rounded-md py-3 px-5">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-circle-check text-3xl text-green-600"></i>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <h1 class="font-semibold text-lg">Cours Approuvés</h1>
+                    <p class="text-sm">10 Cours</p>
+                </div>
+            </div>
+            <!-- Pending Courses -->
+            <div class="flex item-center gap-5 bg-white shadow-md hover:shadow-lg rounded-md py-3 px-5">
+                <div class="flex items-center">
+                    <i class="fa-regular fa-hourglass-half text-3xl text-yellow-500"></i>
+                    <i class=""></i>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <h1 class="font-semibold text-lg">Cours En Attente</h1>
+                    <p class="text-sm">10 Cours</p>
+                </div>
+            </div>
+            <!-- Refused Courses -->
+            <div class="flex item-center gap-5 bg-white shadow-md hover:shadow-lg rounded-md py-3 px-5">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-ban text-3xl text-red-600"></i>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <h1 class="font-semibold text-lg">Cours Refusés</h1>
+                    <p class="text-sm">10 Cours</p>
+                </div>
+            </div>
+            <!-- Enrolled Students -->
+            <div class="flex item-center gap-5 bg-white shadow-md hover:shadow-lg rounded-md py-3 px-5">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-users text-3xl text-blue-600"></i>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <h1 class="font-semibold text-lg">Etudiants Inscris</h1>
+                    <p class="text-sm">10 Cours</p>
+                </div>
+            </div>
+            <!-- Courses Per Category -->
+            <div class="flex flex-col gap-5 lg:col-span-2 bg-white shadow-md hover:shadow-lg rounded-md px-10 py-7">
+                <h1 class="text-lg font-medium text-purple-600 mb-3">Répartition Par Catégorie</h1>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-5">
+                        <div class="h-10 w-10 rounded-full text-xl text-blue-600 bg-blue-100 flex items-center justify-center">
+                            <i class="fa-solid fa-thumbtack"></i>
+                        </div>
+                        <h1 class="text-lg font-semibold">Catégorie</h1>
+                    </div>
+                    <div>
+                        <p>10 Cours</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-5">
+                        <div class="h-10 w-10 rounded-full text-xl text-blue-600 bg-blue-100 flex items-center justify-center">
+                            <i class="fa-solid fa-thumbtack"></i>
+                        </div>
+                        <h1 class="text-lg font-semibold">Catégorie</h1>
+                    </div>
+                    <div>
+                        <p>10 Cours</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-5">
+                        <div class="h-10 w-10 rounded-full text-xl text-blue-600 bg-blue-100 flex items-center justify-center">
+                            <i class="fa-solid fa-thumbtack"></i>
+                        </div>
+                        <h1 class="text-lg font-semibold">Catégorie</h1>
+                    </div>
+                    <div>
+                        <p>10 Cours</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Last Courses -->
+            <div class="flex flex-col gap-5 lg:col-span-2 bg-white shadow-md hover:shadow-lg rounded-md px-10 py-7">
+                <div class="flex item-center justify-between text-lg font-medium text-purple-600 mb-3">
+                    <h1>Cours Récents</h1>
+                    <a href="#">Voir Plus <i class="fa-solid fa-arrow-right ml-3"></i></a>
+                </div>
+                <div class="flex items-center bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <img src="../../uploads/course.png" alt="Article" class="h-16 w-24 rounded-lg object-cover">
+                    <div class="ml-4 flex-1 flex flex-col justify-between">
+                        <h4 class="text-sm font-semibold text-gray-800">Titre</h4>
+                        <p class="text-sm text-gray-600">2025-01-19</p>
+                        <div class="flex items-center mt-1">
+                            <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Approuvé</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <img src="../../uploads/course.png" alt="Article" class="h-16 w-24 rounded-lg object-cover">
+                    <div class="ml-4 flex-1 flex flex-col justify-between">
+                        <h4 class="text-sm font-semibold text-gray-800">Titre</h4>
+                        <p class="text-sm text-gray-600">2025-01-19</p>
+                        <div class="flex items-center mt-1">
+                            <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Approuvé</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <img src="../../uploads/course.png" alt="Article" class="h-16 w-24 rounded-lg object-cover">
+                    <div class="ml-4 flex-1 flex flex-col justify-between">
+                        <h4 class="text-sm font-semibold text-gray-800">Titre</h4>
+                        <p class="text-sm text-gray-600">2025-01-19</p>
+                        <div class="flex items-center mt-1">
+                            <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Approuvé</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
     </main>
 
 
