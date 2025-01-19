@@ -2,6 +2,12 @@
 
     session_start();
 
+    require_once "../../classes/teacher.php";
+
+
+    $enseignant = new Teacher((int)$_SESSION['id_user'],'','','','','','','','');
+
+
     if ($_SESSION['role'] !== 'Enseignant') {
         if ($_SESSION['role'] === 'Admin') {
             header("Location: ../admin/dashboard.php");
@@ -11,6 +17,15 @@
             header("Location: ../guest");
         }
         exit;
+    }
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if(isset($_POST['disconnect'])) {
+            session_unset();
+            session_destroy();
+            header("Location: ../guest");
+            exit();
+        }
     }
 
 ?>
@@ -80,7 +95,10 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <h1 class="font-semibold text-lg">Cours Approuvés</h1>
-                    <p class="text-sm">10 Cours</p>
+                    <?php 
+                    $count = $enseignant->countCourses($enseignant->getId(),'Approuvé');
+                    ?>
+                    <p class="text-sm"><?php echo $count ?> Cours</p>
                 </div>
             </div>
             <!-- Pending Courses -->
@@ -91,7 +109,10 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <h1 class="font-semibold text-lg">Cours En Attente</h1>
-                    <p class="text-sm">10 Cours</p>
+                    <?php 
+                    $count = $enseignant->countCourses($enseignant->getId(),'En Attente');
+                    ?>
+                    <p class="text-sm"><?php echo $count ?> Cours</p>
                 </div>
             </div>
             <!-- Refused Courses -->
@@ -101,7 +122,10 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <h1 class="font-semibold text-lg">Cours Refusés</h1>
-                    <p class="text-sm">10 Cours</p>
+                    <?php 
+                    $count = $enseignant->countCourses($enseignant->getId(),'Refusé');
+                    ?>
+                    <p class="text-sm"><?php echo $count ?> Cours</p>
                 </div>
             </div>
             <!-- Enrolled Students -->
@@ -111,7 +135,10 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <h1 class="font-semibold text-lg">Etudiants Inscris</h1>
-                    <p class="text-sm">10 Cours</p>
+                    <?php 
+                    $count = $enseignant->countEnrolledStudents($enseignant->getId());
+                    ?>
+                    <p class="text-sm"><?php echo $count ?> Etudiants</p>
                 </div>
             </div>
             <!-- Courses Per Category -->
