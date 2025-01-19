@@ -8,7 +8,7 @@
 
 
 
-    $enseignant = new Teacher((int)$_SESSION['id_user'],'','','','','','','','');
+    $enseignant = new Teacher((int)$_SESSION['id_user'],$_SESSION['nom'],$_SESSION['prenom'],'',$_SESSION['email'],'',$_SESSION['role'],$_SESSION['status'],$_SESSION['photo']);
 
 
     if ($_SESSION['role'] !== 'Enseignant') {
@@ -59,14 +59,14 @@
                 </div>
             </div>
             <div class="flex items-center gap-6">
-                <a href="#"><img class="w-14 rounded-full border-4 border-blue-500" src="../../uploads/<?php echo $_SESSION['photo'] ?>" alt=""></a>
+                <a href="#"><img class="w-14 rounded-full border-4 border-blue-500" src="../../uploads/<?php echo $enseignant->getPhoto() ?>" alt=""></a>
             </div>
         </nav>
 
         <section id="links" style="height: calc(100vh - 80px);" class="z-10 absolute top-[80px] left-[-500px] transition-all ease-in duration-500 w-64 bg-white shadow-md py-8 flex flex-col justify-between">
             <div class="flex flex-col items-center justify-center gap-2">
-                <img class="w-1/3 rounded-full border-4 border-white" src="../../uploads/<?php echo $_SESSION['photo'] ?>" alt="">
-                <h1 class="font-semibold mt-2"><?php echo $_SESSION['prenom'].' '.$_SESSION['nom'] ?></h1>
+                <img class="w-1/3 rounded-full border-4 border-white" src="../../uploads/<?php echo $enseignant->getPhoto() ?>" alt="">
+                <h1 class="font-semibold mt-2"><?php echo $enseignant->getNom().' '.$enseignant->getPrenom() ?></h1>
                 <p class="text-xs">Espace Enseignant</p>
             </div>
             <div class="flex flex-col items-center justify-center gap-2">
@@ -74,7 +74,7 @@
                     <i class="fa-solid fa-chart-simple"></i>
                     <p>Statistiques</p>
                 </a>
-                <a href="#" class="flex items-center gap-3 duration-300 hover:bg-gray-200 w-full pl-5 hover:border-r-4 hover:border-gray-400 py-3">
+                <a href="courses.php" class="flex items-center gap-3 duration-300 hover:bg-gray-200 w-full pl-5 hover:border-r-4 hover:border-gray-400 py-3">
                     <i class="fa-solid fa-book-open "></i>
                     <p>Mes Cours</p>
                 </a>
@@ -175,7 +175,7 @@
             <div class="flex flex-col gap-5 lg:col-span-2 bg-white shadow-md hover:shadow-lg rounded-md px-10 py-7">
                 <div class="flex item-center justify-between text-lg font-medium text-purple-600 mb-3">
                     <h1>Cours Récents</h1>
-                    <a href="#">Voir Plus <i class="fa-solid fa-arrow-right ml-3"></i></a>
+                    <a href="courses.php">Voir Plus <i class="fa-solid fa-arrow-right ml-3"></i></a>
                 </div>
                 <?php
                     $courses = $enseignant->lastCourses($enseignant->getId());
@@ -190,7 +190,6 @@
                         <h4 class="text-sm font-semibold text-gray-800"><?php echo $cours->getTitre() ?></h4>
                         <p class="text-sm text-gray-600"><?php echo $cours->getDate() ?></p>
                         <div class="flex items-center mt-1">
-                            <!-- <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full"><?php //echo $cours->getTitre() ?></span> -->
                             <?php
                             if ($cours->getStatus() == 'Approuvé') {
                                 echo '<span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">' . $cours->getStatus() . '</span>';
