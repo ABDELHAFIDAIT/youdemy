@@ -2,7 +2,7 @@
 
     session_start();
 
-    require_once "../../classes/teacher.php";
+    require_once "../../classes/Tag.php";
     require_once "../../classes/admin.php";
     require_once "../../classes/category.php";
     require_once "../../classes/course.php";
@@ -24,11 +24,23 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //disconnect
         if(isset($_POST['disconnect'])) {
             session_unset();
             session_destroy();
             header("Location: ../guest");
             exit();
+        }
+        //add
+        if(isset($_POST["add-tag"])) {
+            $tag = new Tag($_POST['nom-tag']);
+            $tag->addTag($tag->getNom());
+        }
+        //delete
+        if(isset($_POST["delete-tag"])) {
+            $tag = new Tag('');
+            $id= $_POST["tag-id"];
+            $tag->deleteTag($id);
         }
     }
 
@@ -48,7 +60,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <header class="px-5 py-3 bg-white shadow-md fixed w-full">
+    <header class="px-5 py-3 bg-white shadow-md fixed w-full z-10">
         <nav class="flex items-center justify-between gap-5">
             <div class="flex items-center gap-6">
                 <div id="burger-menu">
@@ -106,8 +118,78 @@
     </header>
 
     <main class="bg-gray-100 pt-24 pb-12 px-5">
-        <!-- Statistiques -->
-        
+        <!-- HEAD -->
+        <section class="flex items-center justify-between gap-5 p-5">
+            <button id="open-add-tag" type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ">Ajouter un Tag</button>
+            <button type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Ajouter Multiple Tags</button>
+        </section>
+
+        <!-- TAGS -->
+        <section class="z-[0] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-5 gap-5">
+
+            <?php
+                $tg = new Tag('');
+                $tags = $tg->allTags();
+                foreach ($tags as $tag) {
+                    $tg->setNom($tag['nom_tag']);
+                    $id_tag = $tag['id_tag'];
+                    $courses = $tag['course_count'];
+            ?>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-purple-100 transform hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></span>
+                        <h3 class="text-md font-semibold text-purple-900"><?php echo $tg->getNom() ?></h3>
+                    </div>
+                    <span class="text-xs px-3 py-1 rounded-full bg-yellow-100 text-gray-900"><?php echo $courses ?> Articles</span>
+                </div>
+                
+                <div class="flex justify-end gap-2 mt-4">
+                    <a href="#"><button class="p-2 text-blue-600 hover:bg-purple-50 rounded-lg transition duration-200 hover:scale-110" 
+                            title="Modifier">
+                        <i class="fas fa-edit"></i>
+                    </button></a>
+                    <form method="POST">
+                        <input name="tag-id" type="hidden" value="<?php echo $id_tag ?>">
+                        <button name="delete-tag" class="p-2 text-red-500 hover:bg-pink-50 rounded-lg transition duration-200 hover:scale-110" title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <?php } ?>
+        </section>
+
+
+        <!-- ADD TAG -->
+        <div style="display: none;"  id="add-tag-form" class="z-10 fixed inset-0 bg-gray-900 bg-opacity-80 flex justify-center items-center ">
+            <div class="max-w-md w-full space-y-8 bg-white px-8 py-5 rounded-lg shadow-lg animate__animated animate__fadeIn">
+                <div>
+                    <h2 class="text-center text-2xl font-extrabold text-gray-900">
+                        Nouveau Tag
+                    </h2>
+                </div>
+                <form method="POST" action="" id="addTagForm" class="mt-8 space-y-6">
+                    <div class="rounded-md shadow-sm flex flex-col gap-5">
+                        <div>
+                            <label for="nom-tag" class="sr-only">Nom</label>
+                            <input id="nom-tag" name="nom-tag" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Nom du Tag">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-10">
+                        <button type="submit" name="add-tag" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium  text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                            Enregister
+                        </button>
+                        <button type="button" name="cancel-tag" id="cancel-tag" class="group relative w-full flex justify-center py-2 px-4 border border-gray-800 text-sm font-medium text-black bg-transparent duration-500 hover:bg-red-700 hover:border-none hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-transparent">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 
 
@@ -119,6 +201,22 @@
             menu.addEventListener('click',function(){
                 list.classList.toggle('left-0');
                 list.classList.toggle('left-[-500px]');
+            });
+
+
+
+            const cancelButtonTag = document.querySelector('#cancel-tag');
+            const TagFormContainer = document.querySelector('#add-tag-form');
+            const openTagForm = document.querySelector('#open-add-tag');
+            const TagForm = document.querySelector('#addTagForm');
+
+            cancelButtonTag.addEventListener('click', function() {
+                TagFormContainer.style.display = 'none';
+                TagForm.reset();
+            });
+
+            openTagForm.addEventListener('click', function() {
+                TagFormContainer.style.display = 'flex';
             });
     </script>
 </body>

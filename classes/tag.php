@@ -29,7 +29,9 @@
         // ALL TAGS
         public function allTags(){
             try {
-                $sql = "SELECT * FROM tags ";
+                $sql = "SELECT T.id_tag, T.nom_tag, COUNT(CT.id_course) AS course_count 
+                        FROM tags T LEFT JOIN courses_tags CT ON T.id_tag = CT.id_tag
+                        GROUP BY T.id_tag, T.nom_tag ";
                 $stmt = $this->database->prepare($sql);
                 $stmt->execute();
                 if($stmt->rowCount()>0){
