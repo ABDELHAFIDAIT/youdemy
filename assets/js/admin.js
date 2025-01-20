@@ -78,3 +78,19 @@ editForm.addEventListener('submit', function(e) {
         alert('Une erreur est survenue lors de la modification du tag');
     });
 });
+
+
+
+const cancelButtonCategory = document.querySelector('#cancel-cat');
+const CategoryFormContainer = document.querySelector('#add-cat-form');
+const openCategoryForm = document.querySelector('#open-add-cat');
+const CategoryForm = document.querySelector('#addCategoryForm');
+
+cancelButtonCategory.addEventListener('click', function() {
+    CategoryFormContainer.style.display = 'none';
+    CategoryForm.reset();
+});
+
+openCategoryForm.addEventListener('click', function() {
+    CategoryFormContainer.style.display = 'flex';
+});

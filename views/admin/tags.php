@@ -154,7 +154,7 @@
                         <span class="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></span>
                         <h3 class="text-md font-semibold text-purple-900"><?php echo $tg->getNom() ?></h3>
                     </div>
-                    <span class="text-xs px-3 py-1 rounded-full bg-yellow-100 text-gray-900"><?php echo $courses ?> Articles</span>
+                    <span class="text-xs px-3 py-1 rounded-full bg-yellow-100 text-gray-900"><?php echo $courses ?> Cours</span>
                 </div>
                 
                 <div class="flex justify-end gap-2 mt-4">

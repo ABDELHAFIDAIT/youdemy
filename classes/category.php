@@ -46,9 +46,10 @@
         // GET ALL CATEGORIES
         public function allCategories() {
             try {
-                $query = "SELECT id_categorie, nom_categorie, description 
-                        FROM categories 
-                        ORDER BY id_categorie ASC";
+                $query = "SELECT Ca.id_categorie, Ca.nom_categorie, Ca.description, COUNT(Co.id_course) AS nombre_cours
+                        FROM categories Ca LEFT JOIN courses Co ON Ca.id_categorie = Co.id_categorie
+                        GROUP BY Ca.id_categorie, Ca.nom_categorie, Ca.description
+                        ORDER BY Ca.id_categorie ASC";
 
                 $stmt = $this->database->prepare($query);
                 $stmt->execute();

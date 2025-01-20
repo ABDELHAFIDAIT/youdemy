@@ -24,11 +24,23 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // disconnect
         if(isset($_POST['disconnect'])) {
             session_unset();
             session_destroy();
             header("Location: ../guest");
             exit();
+        }
+        // add
+        if(isset($_POST["add-cat"])) {
+            $categorie = new Categorie($_POST['nom-cat'],$_POST['description']);
+            $categorie->addCategory($categorie->getName(),$categorie->getDescription());
+        }
+        // delete
+        if(isset($_POST['delete-cat'])) {
+            $categorie = new Categorie('','');
+            $id = $_POST['id-cat'];
+            $categorie->deleteCategory( $id );
         }
     }
 
@@ -106,12 +118,93 @@
     </header>
 
     <main class="bg-gray-100 pt-24 pb-12 px-5">
-        <!-- Statistiques -->
+        <!-- HEAD -->
+        <section class="flex items-center justify-end py-3">
+            <button id="open-add-cat" type="button" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-sm text-sm px-5 py-2.5 me-2 mb-2">Ajouter une Catégorie</button>
+        </section>
+
+        <!-- SHOW CATEGORIES -->
+        <section class="flex items-center p-3">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-blue-500 divide-y divide-gray-200">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Nom</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Description</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Cours</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+            <?php
+                $ctg = new Categorie('','');
+                $ctgs = $ctg->allCategories();
+                foreach ($ctgs as $ct) {
+                    $ctg->setName($ct['nom_categorie']);
+                    $ctg->setDescription($ct['description']);
+                    $id_cat = $ct['id_categorie'];
+                    $courses = $ct['nombre_cours'];
+            ?>
+
+            
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap"><?php echo $ctg->getName() ?></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><?php echo $ctg->getDescription() ?></td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"><?php echo $courses ?> Cours</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap flex gap-1">
+                            <button class="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded-sm hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Modifier</button>
+                            <form method="POST" action="">
+                                <input type="hidden" name="id-cat" value="<?php echo $id_cat ?>">
+                                <button name="delete-cat" class="ml-2 px-3 py-1 text-xs font-medium text-white bg-red-600 rounded-sm hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                
+
+            <?php
+                }
+            ?>
+            </tbody>
+            </table>
+        </section>
+
+        <!-- ADD CATEGORY FORM -->
+        <section style="display:none;" id="add-cat-form" class="z-10 fixed inset-0 bg-gray-900 bg-opacity-80 flex justify-center items-center ">
+            <div class="max-w-md w-full space-y-8 bg-white px-8 py-5 rounded-lg shadow-lg animate__animated animate__fadeIn">
+                <div>
+                    <h2 class="text-center text-3xl font-extrabold text-gray-900">
+                        Nouvelle Catégorie
+                    </h2>
+                </div>
+                <form method="POST" action="" id="addCategoryForm" class="mt-8 space-y-6">
+                    <div class="rounded-md shadow-sm flex flex-col gap-5">
+                        <div>
+                            <label for="nom-cat" class="sr-only">Nom</label>
+                            <input id="nom-cat" name="nom-cat" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Nom de Catégorie">
+                        </div>
+                        <div>
+                            <label for="description" class="sr-only">Description</label>
+                            <textarea id="description" name="description" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Entrer le Contenu de votre Article ici.."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-10">
+                        <button type="submit" name="add-cat" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium  text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                            Enregister
+                        </button>
+                        <button type="button" name="cancel-cat" id="cancel-cat" class="group relative w-full flex justify-center py-2 px-4 border border-gray-800 text-sm font-medium text-black bg-transparent duration-500 hover:bg-red-700 hover:border-none hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-transparent">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
         
     </main>
 
 
-    <script src="../../assets/js/main.js"></script>
+    <!-- <script src="../../assets/js/admin.js"></script> -->
     <script>
             let list = document.querySelector('#links');
             const menu = document.querySelector('#burger-menu');
@@ -119,6 +212,20 @@
             menu.addEventListener('click',function(){
                 list.classList.toggle('left-0');
                 list.classList.toggle('left-[-500px]');
+            });
+
+            const cancelButtonCategory = document.querySelector('#cancel-cat');
+            const CategoryFormContainer = document.querySelector('#add-cat-form');
+            const openCategoryForm = document.querySelector('#open-add-cat');
+            const CategoryForm = document.querySelector('#addCategoryForm');
+
+            cancelButtonCategory.addEventListener('click', function() {
+                CategoryFormContainer.style.display = 'none';
+                CategoryForm.reset();
+            });
+
+            openCategoryForm.addEventListener('click', function() {
+                CategoryFormContainer.style.display = 'flex';
             });
     </script>
 </body>
