@@ -34,7 +34,7 @@
 
     $etd = $_SESSION['id_user'];
 
-    $courses = $etudiant->subscribedCourses($etd);
+    $courses = $etudiant->displayCourses($etd);
 ?>
 
 

@@ -1,8 +1,9 @@
 <?php
 
     require_once __DIR__ .'./user.php';
+    require_once __DIR__ .'./displayCourse.interface.php';
 
-    class Student extends User {
+    class Student extends User implements DisplayCourse{
 
 
         public function __construct($nom,$prenom,$telephone,$email,$password,$role,$status,$photo) {
@@ -29,7 +30,7 @@
         
         
         // GET SUBSCRIBED COURSES
-        public function subscribedCourses($student) {
+        public function displayCourses($student) {
             try {
                 $sql = 'SELECT 
                             Co.id_course,

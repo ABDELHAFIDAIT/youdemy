@@ -13,6 +13,10 @@
 
     $new_cour = new Course('','','','','','','');
 
+    $categ = new Categorie('','');
+
+    $tagg = new Tag('');
+
     if ($_SESSION['role'] !== 'Enseignant') {
         if ($_SESSION['role'] === 'Admin') {
             header("Location: ../admin/dashboard.php");
@@ -25,12 +29,14 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // disconnect
         if(isset($_POST['disconnect'])) {
             session_unset();
             session_destroy();
             header("Location: ../guest");
             exit();
         }
+        // delete
         if(isset($_POST["delete"])) {
             $course = $_POST['course'];
             $delete = $new_cour->deleteCourse($course);
@@ -38,6 +44,52 @@
                 echo '<script>alert("Cours Supprimé avec Succés !")</script>';
             } else {
                 echo '<script>alert("Cours Non Supprimé !")</script>';
+            }
+        }
+        // add
+        if (isset($_POST['save-add'])) {
+            $type = htmlspecialchars($_POST['type']);
+            $titre = htmlspecialchars($_POST['titre']);
+            $description = htmlspecialchars($_POST['description']);
+            $niveau = htmlspecialchars($_POST['niveau']);
+            $id_category = htmlspecialchars($_POST['categorie']);
+        
+            
+            $filename = $_FILES["couverture"]["name"];
+            $fileTmpName = $_FILES["couverture"]["tmp_name"];
+            $newFileName = uniqid() . "-" . $filename;
+            move_uploaded_file($fileTmpName, "../../uploads/" . $newFileName);
+            $couverture = $newFileName;
+        
+            $tags = $_POST['tags'];
+        
+            
+            $courss = new Course($titre, $description, $couverture, NULL, NULL, '', $niveau);
+        
+            if ($type == 'Document') {
+                $courss->setContenu(htmlspecialchars($_POST['document']));
+            } else {
+                $videoname = $_FILES["video"]["name"];
+                $videoTmpName = $_FILES["video"]["tmp_name"];
+                $newVideoName = uniqid() . "-" . $videoname;
+                move_uploaded_file($videoTmpName, "../../uploads/" . $newVideoName);
+                $video = $newVideoName;
+        
+                $courss->setVideo($video);
+            }
+        
+            
+            $courss->addCourse($courss, $id_category, $enseignant->getId());
+        
+            
+            $coursee = $courss->lastCourseInserted();
+        
+            if ($coursee) { 
+                foreach ($tags as $tag) {
+                    $tagg->assignTag($tag, $coursee->getId()); 
+                }
+            } else {
+                throw new Exception("Erreur : Impossible de récupérer le dernier cours inséré.");
             }
         }
     }
@@ -196,7 +248,8 @@
                     <h1 class="text-2xl font-semibold">Ajouter un Nouveau Cours</h1>
                     <i id="close" class="fa-solid fa-xmark text-xl cursor-pointer"></i>
                 </div>
-                <form method="POST" id="add-form" class="flex flex-col gap-5">
+                <!-- Add Course Form -->
+                <form method="POST" id="add-form" enctype="multipart/form-data" class="flex flex-col gap-5">
                     <div class="flex gap-5">
                         <div class="flex flex-col gap-3 flex-1">
                             <!-- Titre -->
@@ -234,44 +287,37 @@
                                 <label for="couverture">Couverture</label>
                                 <input type="file" accept="image/*" name="couverture" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer le Lien du Cours..">
                             </div>
-
                             <!-- Tags -->
-                            <div class="flex items-center flex-wrap gap-3 h-40 overflow-auto border border-black px-4 rounded-md">
-                                <div class="flex items-center gap-1">
-                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
-                                    <label for="tag" class="mr-3">tag</label>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
-                                    <label for="tag" class="mr-3">tag</label>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
-                                    <label for="tag" class="mr-3">tag</label>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
-                                    <label for="tag" class="mr-3">tag</label>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
-                                    <label for="tag" class="mr-3">tag</label>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
-                                    <label for="tag" class="mr-3">tag</label>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
-                                    <label for="tag" class="mr-3">tag</label>
-                                </div>
+                            <div class="flex items-center flex-wrap gap-3 h-40 overflow-auto border border-black px-4 py-2 rounded-md">
+                                <?php
+                                    $tags = $tagg->allTags();
+
+                                    if(is_array($tags) && count($tags) > 0) {
+                                        foreach ($tags as $tag) {
+                                            $taggg = new Tag($tag['nom_tag']);
+                                            echo '
+                                                <div class="flex items-center gap-1">
+                                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
+                                                    <label for="tag" class="mr-3">'. $taggg->getNom().'</label>
+                                                </div>
+                                            ';
+                                        }
+                                    }
+                                ?>
                             </div>
                             <!-- Catégorie -->
                             <div class="flex flex-col gap-2">
                                 <label for="categorie">Catégorie</label>
                                 <select name="categorie" id="categorie" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800">
-                                    <option value="1">categorie 1</option>
-                                    <option value="2">categorie 2</option>
+                                    <?php 
+                                    $results = $categ->allCategories();
+                                    if(is_array($results)){
+                                        foreach($results as $result){
+                                            $categorie = new Categorie($result['nom_categorie'],$result['description']);
+                                            echo '<option value="'.$result['id_categorie'].'">'.$categorie->getName().'</option>';
+                                        }
+                                    }
+                                    ?>
                                 </select>
                             </div>
                             <!-- Niveau -->

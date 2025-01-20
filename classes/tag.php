@@ -26,6 +26,24 @@
         }
 
 
+        // ALL TAGS
+        public function allTags(){
+            try {
+                $sql = "SELECT * FROM tags ";
+                $stmt = $this->database->prepare($sql);
+                $stmt->execute();
+                if($stmt->rowCount()>0){
+                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    return $result;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreurs Lors de La récupération des Tags : ". $e->getMessage());
+            }
+        }
+
+
         // ADD TAG
         public function addTag($nom){
             try {
@@ -93,6 +111,7 @@
             }
         }
 
+        // COURESES'S TAGS
         public function showCourseTags($id){
             try {
                 $sql = "SELECT nom_tag
@@ -110,6 +129,20 @@
                 }
             } catch (PDOException $e) {
                 throw new Exception("Erreurs Lors de La récupération des Tags : ". $e->getMessage());
+            }
+        }
+
+
+        // ASSIGN TAG
+        public function assignTag($tag,$course){ 
+            try {
+                $sql = "INSERT INTO courses_tags(id_tag , id_course) VALUES (:id_tag , :id_course)";
+                $stmt = $this->database->prepare($sql);
+                $stmt->bindParam(":id_tag", $tag, PDO::PARAM_INT);
+                $stmt->bindParam(":id_course", $course, PDO::PARAM_INT);
+                $stmt->execute();
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de l'insertion dans l'Assignement des Tags au cours : ". $e->getMessage());
             }
         }
         

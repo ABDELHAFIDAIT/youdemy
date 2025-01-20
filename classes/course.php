@@ -1,8 +1,9 @@
 <?php
 
     require_once __DIR__ .'./../config/db.php';
+    require_once __DIR__ .'./displayCourse.interface.php';
 
-    class Course {
+    class Course implements DisplayCourse{
         private int $id;
         private string | null $titre;
         private string | null $description;
@@ -39,7 +40,7 @@
         public function getContenu():string | NULL{
             return $this->contenu;
         }
-        public function getVideo():string{
+        public function getVideo(){
             return $this->video;
         }
         public function getCouverture():string{
@@ -53,6 +54,9 @@
         }
         public function getNiveau():string{
             return $this->niveau;
+        }
+        public function getDatabase(): PDO {
+            return $this->database;
         }
 
         // SETTERS
@@ -83,7 +87,7 @@
 
 
         // GET ALL COURSES WITH CATEGORY NAME AND TEACHER FULL NAME
-        public function allCourses($status){
+        public function displayCourses($status){
             try{
                 $query = "SELECT Co.id_course,
                                 Co.titre,
@@ -246,7 +250,7 @@
 
 
         // ADD COURSE
-        public function addCourse($titre,$description,$contenu,$video,$couverture,$niveau,$id_categorie,$id_teacher){
+        public function addCourse(Course $course,$id_categorie,$id_teacher){
             try{
                 $query = "INSERT INTO courses 
                                 (titre, description, contenu, video, couverture, niveau, id_categorie, id_teacher) 
@@ -254,14 +258,14 @@
                                 (:titre, :description, :contenu, :video, :couverture, :niveau,:id_categorie, :id_teacher)";
 
                 $stmt = $this->database->prepare($query);
-                $stmt->bindParam(':titre', $titre, PDO::PARAM_STR);
-                $stmt->bindParam(':description', $description, PDO::PARAM_STR);
-                $stmt->bindParam(':contenu', $contenu, PDO::PARAM_STR);
-                $stmt->bindParam(':video', $video, PDO::PARAM_STR);
-                $stmt->bindParam(':couverture', $couverture, PDO::PARAM_STR);
-                $stmt->bindParam(':niveau', $niveau, PDO::PARAM_STR);
-                $stmt->bindParam(':id_categorie', $id_categorie, PDO::PARAM_INT);
-                $stmt->bindParam(':id_teacher', $id_teacher, PDO::PARAM_INT);
+                $stmt->bindValue(':titre', $course->getTitre(), PDO::PARAM_STR);
+                $stmt->bindValue(':description', $course->getDescription(), PDO::PARAM_STR);
+                $stmt->bindValue(':contenu', $course->getContenu(), PDO::PARAM_STR);
+                $stmt->bindValue(':video', $course->getVideo(), PDO::PARAM_STR);
+                $stmt->bindValue(':couverture', $course->getCouverture(), PDO::PARAM_STR);
+                $stmt->bindValue(':niveau', $course->getNiveau(), PDO::PARAM_STR);
+                $stmt->bindValue(':id_categorie', $id_categorie, PDO::PARAM_INT);
+                $stmt->bindValue(':id_teacher', $id_teacher, PDO::PARAM_INT);
 
                 if($stmt->execute()){
                     return true;
@@ -457,6 +461,33 @@
             }
         }
         
+
+        public function lastCourseInserted(){
+            try {
+                $query = "SELECT * FROM courses ORDER BY id_course DESC LIMIT 1";
+                $stmt = $this->database->prepare($query);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+                if ($row) {
+                    $this->id = $row['id_course'];
+                    $this->titre = $row['titre'];
+                    $this->description = $row['description'];
+                    $this->couverture = $row['couverture'];
+                    $this->contenu = $row['contenu'];
+                    $this->video = $row['video'];
+                    $this->niveau = $row['niveau'];
+                    $this->date = $row['date_publication'];
+                    $this->status = $row['statut_cours'];
+
+                    return $this;
+                }else{
+                    return null;
+                }
+            } catch (PDOException $e) {
+                throw new Exception('Erreur lors de la Récupération du Dernier Cours Inséré : '. $e->getMessage());
+            }
+        }
         
         
         
