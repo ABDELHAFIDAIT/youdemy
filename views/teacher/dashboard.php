@@ -184,7 +184,7 @@
                         $cours = new Course($course['titre'], '',$course['couverture'],'','',$course['statut_cours'],'');
                         $cours->setDate($course['date_publication']);
                 ?>
-                <div class="flex items-center bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                <div class="flex items-center p-2 rounded-lg hover:bg-gray-200 transition-colors duration-200">
                     <img src="../../uploads/<?php echo $cours->getCouverture() ?>" alt="Article" class="h-16 w-24 rounded-lg object-cover">
                     <div class="ml-4 flex-1 flex flex-col justify-between">
                         <h4 class="text-sm font-semibold text-gray-800"><?php echo $cours->getTitre() ?></h4>

@@ -111,7 +111,7 @@
                     </button>
                 </form>
             </div>
-            <button type="button" class="bg-blue-600 text-md text-white py-1 px-4 rounded-md duration-300 hover:px-5 hover:bg-blue-800">Ajouter un Cours</button>
+            <button id="add-course" type="button" class="bg-blue-600 text-md text-white py-1 px-4 rounded-md duration-300 hover:px-5 hover:bg-blue-800">Ajouter un Cours</button>
         </section>
 
         <!-- Courses -->
@@ -188,18 +188,117 @@
             }
             ?>
         </section>
+
+        <!-- Add Course -->
+        <section id="popup" class="fixed inset-0 bg-black bg-opacity-80 z-10 hidden items-center justify-center">
+            <div class="bg-white p-5 flex flex-col gap-5 w-[70vw] rounded-md scale-[0.9]">
+                <div class="flex items-center justify-between px-3 pb-5 border-b border-gray-300">
+                    <h1 class="text-2xl font-semibold">Ajouter un Nouveau Cours</h1>
+                    <i id="close" class="fa-solid fa-xmark text-xl cursor-pointer"></i>
+                </div>
+                <form method="POST" id="add-form" class="flex flex-col gap-5">
+                    <div class="flex gap-5">
+                        <div class="flex flex-col gap-3 flex-1">
+                            <!-- Titre -->
+                            <div class="flex flex-col gap-2">
+                                <label for="titre">Titre</label>
+                                <input type="text" name="titre" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer le Titre du Cours..">
+                            </div>
+                            <!-- Description -->
+                            <div class="flex flex-col gap-2">
+                                <label for="description">Description</label>
+                                <textarea name="description" id="description" class="h-32 border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer la Description du Cours.."></textarea>
+                            </div>
+                            <!-- Type -->
+                            <div class="flex flex-col gap-2">
+                                <label for="type">Type</label>
+                                <select name="type" id="type" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800">
+                                    <option>Video</option>
+                                    <option>Document</option>
+                                </select>
+                            </div>
+                            <!-- Document -->
+                            <div id="document" class="hidden flex-col gap-2">
+                                <label for="document">Document (URL)</label>
+                                <input type="url" name="document" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer le Lien du Cours..">
+                            </div>
+                            <!-- Video -->
+                            <div id="video" class="flex flex-col gap-2">
+                                <label for="video">Vidéo</label>
+                                <input type="file" accept="video/*" name="video" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer le Lien du Cours..">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3 flex-1">
+                            <!-- Couverture -->
+                            <div class="flex flex-col gap-2">
+                                <label for="couverture">Couverture</label>
+                                <input type="file" accept="image/*" name="couverture" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer le Lien du Cours..">
+                            </div>
+
+                            <!-- Tags -->
+                            <div class="flex items-center flex-wrap gap-3 h-40 overflow-auto border border-black px-4 rounded-md">
+                                <div class="flex items-center gap-1">
+                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
+                                    <label for="tag" class="mr-3">tag</label>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
+                                    <label for="tag" class="mr-3">tag</label>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
+                                    <label for="tag" class="mr-3">tag</label>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
+                                    <label for="tag" class="mr-3">tag</label>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
+                                    <label for="tag" class="mr-3">tag</label>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
+                                    <label for="tag" class="mr-3">tag</label>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
+                                    <label for="tag" class="mr-3">tag</label>
+                                </div>
+                            </div>
+                            <!-- Catégorie -->
+                            <div class="flex flex-col gap-2">
+                                <label for="categorie">Catégorie</label>
+                                <select name="categorie" id="categorie" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800">
+                                    <option value="1">categorie 1</option>
+                                    <option value="2">categorie 2</option>
+                                </select>
+                            </div>
+                            <!-- Niveau -->
+                            <div class="flex flex-col gap-2">
+                                <label for="niveau">Niveau</label>
+                                <select name="niveau" id="niveau" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800">
+                                    <option>Facile</option>
+                                    <option>Moyen</option>
+                                    <option>Difficile</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <button name="save-add" class="py-1 px-5 text-white duration-500 bg-blue-600 hover:bg-blue-800 rounded-sm">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </section>
     </main>
 
 
-    <script src="../../assets/js/main.js"></script>
+    <!-- <script src="../../assets/js/main.js"></script> -->
+    <script src="../../assets/js/teacher.js"></script>
     <script>
-            let list = document.querySelector('#links');
-            const menu = document.querySelector('#burger-menu');
+            
 
-            menu.addEventListener('click',function(){
-                list.classList.toggle('left-0');
-                list.classList.toggle('left-[-500px]');
-            });
     </script>
 </body>
 </html>
