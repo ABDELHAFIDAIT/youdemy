@@ -242,73 +242,81 @@
         </section>
 
         <!-- Add Course -->
-        <section id="popup" class="fixed inset-0 bg-black bg-opacity-80 z-10 hidden items-center justify-center">
-            <div class="bg-white p-5 flex flex-col gap-5 w-[70vw] rounded-md scale-[0.9]">
-                <div class="flex items-center justify-between px-3 pb-5 border-b border-gray-300">
-                    <h1 class="text-2xl font-semibold">Ajouter un Nouveau Cours</h1>
-                    <i id="close" class="fa-solid fa-xmark text-xl cursor-pointer"></i>
+        <section id="popup" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm z-10 hidden items-center justify-center">
+            <div class="bg-white p-8 flex flex-col gap-6 w-[80vw] max-w-5xl rounded-2xl shadow-2xl scale-[0.7] transform transition-all duration-300">
+                <div class="flex items-center justify-between border-b border-gray-200 pb-5">
+                    <div class="flex flex-col gap-2">
+                        <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Ajouter un Nouveau Cours</h1>
+                        <p class="text-gray-500">Remplissez les informations ci-dessous pour créer un nouveau cours</p>
+                    </div>
+                    <button id="close" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300">
+                        <i class="fa-solid fa-xmark text-2xl text-gray-400 hover:text-gray-600"></i>
+                    </button>
                 </div>
+
                 <!-- Add Course Form -->
-                <form method="POST" id="add-form" enctype="multipart/form-data" class="flex flex-col gap-5">
-                    <div class="flex gap-5">
-                        <div class="flex flex-col gap-3 flex-1">
+                <form method="POST" id="add-form" enctype="multipart/form-data" class="flex flex-col gap-8">
+                    <div class="flex gap-8">
+                        <div class="flex flex-col gap-6 flex-1">
                             <!-- Titre -->
                             <div class="flex flex-col gap-2">
-                                <label for="titre">Titre</label>
-                                <input type="text" name="titre" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer le Titre du Cours..">
+                                <label for="titre" class="font-semibold text-gray-700">Titre du cours</label>
+                                <input type="text" name="titre" required class="border border-gray-300 text-gray-900 py-2.5 px-4 rounded-lg outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300" placeholder="ex: Introduction au JavaScript">
                             </div>
                             <!-- Description -->
                             <div class="flex flex-col gap-2">
-                                <label for="description">Description</label>
-                                <textarea name="description" id="description" class="h-32 border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer la Description du Cours.."></textarea>
+                                <label for="description" class="font-semibold text-gray-700">Description</label>
+                                <textarea name="description" id="description" required class="h-32 border border-gray-300 text-gray-900 py-2.5 px-4 rounded-lg outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 resize-none" placeholder="Décrivez votre cours en quelques phrases..."></textarea>
                             </div>
                             <!-- Type -->
                             <div class="flex flex-col gap-2">
-                                <label for="type">Type</label>
-                                <select name="type" id="type" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800">
+                                <label for="type" class="font-semibold text-gray-700">Type de contenu</label>
+                                <select name="type" id="type" class="border border-gray-300 text-gray-900 py-2.5 px-4 rounded-lg outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white">
                                     <option>Video</option>
                                     <option>Document</option>
                                 </select>
                             </div>
                             <!-- Document -->
                             <div id="document" class="hidden flex-col gap-2">
-                                <label for="document">Document (URL)</label>
-                                <input type="url" name="document" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer le Lien du Cours..">
+                                <label for="document" class="font-semibold text-gray-700">Lien du document</label>
+                                <input type="url" name="document" class="border border-gray-300 text-gray-900 py-2.5 px-4 rounded-lg outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300" placeholder="https://...">
                             </div>
                             <!-- Video -->
                             <div id="video" class="flex flex-col gap-2">
-                                <label for="video">Vidéo</label>
-                                <input type="file" accept="video/*" name="video" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer le Lien du Cours..">
+                                <label for="video" class="font-semibold text-gray-700">Fichier vidéo</label>
+                                <input type="file" accept="video/*" name="video" class="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-300 rounded-lg text-gray-900">
                             </div>
                         </div>
-                        <div class="flex flex-col gap-3 flex-1">
+                        <div class="flex flex-col gap-6 flex-1">
                             <!-- Couverture -->
                             <div class="flex flex-col gap-2">
-                                <label for="couverture">Couverture</label>
-                                <input type="file" accept="image/*" name="couverture" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800" placeholder="Entrer le Lien du Cours..">
+                                <label for="couverture" class="font-semibold text-gray-700">Image de couverture</label>
+                                <input type="file" accept="image/*" name="couverture" required class="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-300 rounded-lg text-gray-900">
                             </div>
                             <!-- Tags -->
-                            <div class="flex items-center flex-wrap gap-3 h-40 overflow-auto border border-black px-4 py-2 rounded-md">
-                                <?php
-                                    $tags = $tagg->allTags();
-
-                                    if(is_array($tags) && count($tags) > 0) {
-                                        foreach ($tags as $tag) {
-                                            $taggg = new Tag($tag['nom_tag']);
-                                            echo '
-                                                <div class="flex items-center gap-1">
-                                                    <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'">
-                                                    <label for="tag" class="mr-3">'. $taggg->getNom().'</label>
-                                                </div>
-                                            ';
+                            <div class="flex flex-col gap-2">
+                                <label class="font-semibold text-gray-700">Tags</label>
+                                <div class="flex items-start flex-wrap gap-3 max-h-40 overflow-y-auto border border-gray-300 rounded-lg p-4 bg-gray-50">
+                                    <?php
+                                        $tags = $tagg->allTags();
+                                        if(is_array($tags) && count($tags) > 0) {
+                                            foreach ($tags as $tag) {
+                                                $taggg = new Tag($tag['nom_tag']);
+                                                echo '
+                                                    <label class="flex items-center gap-2 px-3 py-1.5 bg-white rounded-full border border-gray-200 hover:border-blue-400 cursor-pointer transition-all duration-300">
+                                                        <input type="checkbox" id="tag" name="tags[]" value="'. $tag['id_tag'] .'" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                                        <span class="text-sm text-gray-700">'. $taggg->getNom() .'</span>
+                                                    </label>
+                                                ';
+                                            }
                                         }
-                                    }
-                                ?>
+                                    ?>
+                                </div>
                             </div>
                             <!-- Catégorie -->
                             <div class="flex flex-col gap-2">
-                                <label for="categorie">Catégorie</label>
-                                <select name="categorie" id="categorie" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800">
+                                <label for="categorie" class="font-semibold text-gray-700">Catégorie</label>
+                                <select name="categorie" id="categorie" required class="border border-gray-300 text-gray-900 py-2.5 px-4 rounded-lg outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white">
                                     <?php 
                                     $results = $categ->allCategories();
                                     if(is_array($results)){
@@ -322,8 +330,8 @@
                             </div>
                             <!-- Niveau -->
                             <div class="flex flex-col gap-2">
-                                <label for="niveau">Niveau</label>
-                                <select name="niveau" id="niveau" class="border border-gray-500 text-black py-1 px-4 rounded-md outline-none focus:border-purple-800">
+                                <label for="niveau" class="font-semibold text-gray-700">Niveau de difficulté</label>
+                                <select name="niveau" id="niveau" required class="border border-gray-300 text-gray-900 py-2.5 px-4 rounded-lg outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white">
                                     <option>Facile</option>
                                     <option>Moyen</option>
                                     <option>Difficile</option>
@@ -331,8 +339,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex justify-center">
-                        <button name="save-add" class="py-1 px-5 text-white duration-500 bg-blue-600 hover:bg-blue-800 rounded-sm">Enregistrer</button>
+                    <div class="flex justify-end gap-4 pt-4 border-t border-gray-200">
+                        <button name="save-add" class="px-6 py-2.5 text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg transition-all duration-300 font-medium">
+                            <i class="fas fa-plus mr-2"></i>Créer le cours
+                        </button>
                     </div>
                 </form>
             </div>

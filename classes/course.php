@@ -488,6 +488,38 @@
                 throw new Exception('Erreur lors de la Récupération du Dernier Cours Inséré : '. $e->getMessage());
             }
         }
+
+
+        // UPDATE COURSE
+        public function updateCourse(Course $course, $id_course) {
+            try {
+            $query = "UPDATE courses 
+                  SET titre = :titre, 
+                      description = :description, 
+                      contenu = :contenu, 
+                      video = :video, 
+                      couverture = :couverture, 
+                      niveau = :niveau 
+                  WHERE id_course = :id_course";
+
+            $stmt = $this->database->prepare($query);
+            $stmt->bindValue(':titre', $course->getTitre(), PDO::PARAM_STR);
+            $stmt->bindValue(':description', $course->getDescription(), PDO::PARAM_STR);
+            $stmt->bindValue(':contenu', $course->getContenu(), PDO::PARAM_STR);
+            $stmt->bindValue(':video', $course->getVideo(), PDO::PARAM_STR);
+            $stmt->bindValue(':couverture', $course->getCouverture(), PDO::PARAM_STR);
+            $stmt->bindValue(':niveau', $course->getNiveau(), PDO::PARAM_STR);
+            $stmt->bindValue(':id_course', $id_course, PDO::PARAM_INT);
+
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+            } catch (PDOException $e) {
+            throw new Exception('Erreur lors de la mise à jour du cours : ' . $e->getMessage());
+            }
+        }
         
         
         
