@@ -36,6 +36,18 @@
             $tag = new Tag($_POST['nom-tag']);
             $tag->addTag($tag->getNom());
         }
+        //add multiple tags
+        if(isset($_POST["add-multiple-tags"])) {
+            $tags_string = $_POST['tags-list'];
+            $tags_array = explode(',', $tags_string);
+            $tag = new Tag('');
+            foreach($tags_array as $tag_name) {
+                $tag_name = trim($tag_name);
+                if(!empty($tag_name)) {
+                    $tag->addTag($tag_name);
+                }
+            }
+        }
         //delete
         if(isset($_POST["delete-tag"])) {
             $tag = new Tag('');
@@ -136,7 +148,7 @@
                     $courses = $tag['course_count'];
             ?>
 
-            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-purple-100 transform hover:-translate-y-1">
+            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-purple-100 transform hover:-translate-y-1" data-tag-id="<?php echo $id_tag ?>">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <span class="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></span>
@@ -146,10 +158,10 @@
                 </div>
                 
                 <div class="flex justify-end gap-2 mt-4">
-                    <a href="#"><button class="p-2 text-blue-600 hover:bg-purple-50 rounded-lg transition duration-200 hover:scale-110" 
+                    <button onclick="openEditModal(<?php echo $id_tag ?>, '<?php echo $tg->getNom() ?>')" class="p-2 text-blue-600 hover:bg-purple-50 rounded-lg transition duration-200 hover:scale-110" 
                             title="Modifier">
                         <i class="fas fa-edit"></i>
-                    </button></a>
+                    </button>
                     <form method="POST">
                         <input name="tag-id" type="hidden" value="<?php echo $id_tag ?>">
                         <button name="delete-tag" class="p-2 text-red-500 hover:bg-pink-50 rounded-lg transition duration-200 hover:scale-110" title="Supprimer">
@@ -190,34 +202,74 @@
                 </form>
             </div>
         </div>
+
+        <!-- ADD MULTIPLE TAGS -->
+        <div style="display: none;" id="add-multiple-tags-form" class="z-10 fixed inset-0 bg-gray-900 bg-opacity-80 flex justify-center items-center">
+            <div class="max-w-md w-full space-y-8 bg-white px-8 py-5 rounded-lg shadow-lg animate__animated animate__fadeIn">
+                <div>
+                    <h2 class="text-center text-2xl font-extrabold text-gray-900">
+                        Ajouter Plusieurs Tags
+                    </h2>
+                    <p class="mt-2 text-center text-sm text-gray-600">
+                        Séparez les tags par des virgules
+                    </p>
+                </div>
+                <form method="POST" action="" id="addMultipleTagsForm" class="mt-8 space-y-6">
+                    <div class="rounded-md shadow-sm flex flex-col gap-5">
+                        <div>
+                            <label for="tags-list" class="sr-only">Tags</label>
+                            <textarea id="tags-list" name="tags-list" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="tag1, tag2, tag3, ..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-10">
+                        <button type="submit" name="add-multiple-tags" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                            Enregistrer
+                        </button>
+                        <button type="button" id="cancel-multiple-tags" class="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- EDIT TAG MODAL -->
+        <div style="display: none;" id="edit-tag-modal" class="z-10 fixed inset-0 bg-gray-900 bg-opacity-80 flex justify-center items-center">
+            <div class="max-w-md w-full space-y-8 bg-white px-8 py-5 rounded-lg shadow-lg animate__animated animate__fadeIn">
+                <div>
+                    <h2 class="text-center text-2xl font-extrabold text-gray-900">
+                        Modifier le Tag
+                    </h2>
+                </div>
+                <form id="editTagForm" class="mt-8 space-y-6">
+                    <input type="hidden" id="edit-tag-id">
+                    <div class="rounded-md shadow-sm flex flex-col gap-5">
+                        <div>
+                            <label for="edit-tag-name" class="sr-only">Nom</label>
+                            <input id="edit-tag-name" name="edit-tag-name" type="text" required 
+                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" 
+                                placeholder="Nouveau nom du tag">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-10">
+                        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                            Modifier
+                        </button>
+                        <button type="button" onclick="closeEditModal()" class="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 
 
-    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/admin.js"></script>
     <script>
-            let list = document.querySelector('#links');
-            const menu = document.querySelector('#burger-menu');
-
-            menu.addEventListener('click',function(){
-                list.classList.toggle('left-0');
-                list.classList.toggle('left-[-500px]');
-            });
-
-
-
-            const cancelButtonTag = document.querySelector('#cancel-tag');
-            const TagFormContainer = document.querySelector('#add-tag-form');
-            const openTagForm = document.querySelector('#open-add-tag');
-            const TagForm = document.querySelector('#addTagForm');
-
-            cancelButtonTag.addEventListener('click', function() {
-                TagFormContainer.style.display = 'none';
-                TagForm.reset();
-            });
-
-            openTagForm.addEventListener('click', function() {
-                TagFormContainer.style.display = 'flex';
-            });
+            
     </script>
 </body>
 </html>
