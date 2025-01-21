@@ -200,7 +200,7 @@
         <!-- Courses REFUSE -->
         <section class="z-[0] grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
             <div class="md:col-span-2 lg:col-span-3 py-3 px-5">
-                <h1 class="text-2xl text-red-500 font-semibold">Cours En Attente</h1>
+                <h1 class="text-2xl text-red-500 font-semibold">Cours Refusé</h1>
             </div>
             
             <?php
@@ -321,8 +321,7 @@
         
     </main>
 
-
-    <script src="../../assets/js/main.js"></script>
+    
     <script>
             let list = document.querySelector('#links');
             const menu = document.querySelector('#burger-menu');

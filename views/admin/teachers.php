@@ -106,7 +106,6 @@
     </header>
 
     <main class="bg-gray-100 pt-24 pb-12 px-5">
-        <!-- Statistiques -->
         
     </main>
 

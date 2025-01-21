@@ -4,7 +4,7 @@
     require_once __DIR__ .'./displayCourse.interface.php';
 
     class Student extends User implements DisplayCourse{
-
+        private array $courses = [];
 
         public function __construct($nom,$prenom,$telephone,$email,$password,$role,$status,$photo) {
             parent::__construct( $nom, $prenom, $telephone, $email, $password, $role, $status, $photo);

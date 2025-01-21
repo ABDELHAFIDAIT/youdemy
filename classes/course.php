@@ -13,6 +13,8 @@
         private string | null $status;
         private string | null $date;
         private string | null $niveau;
+        private array $students = [];
+        private array $tags = [];
         private $database;
 
         public function __construct($titre,$description,$couverture,$contenu,$video,$statut,$niveau) {

@@ -4,6 +4,7 @@
     class Tag {
         private $id;
         private $nom;
+        private array $courses = [];
 
         private $database;
 
