@@ -191,7 +191,7 @@
                     }
                 }else{
             ?>
-            <h1 class="text-3xl font-semibold md:col-span-2 lg:col-span-3 py-3 flex justify-center">Aucun Article en Attente pour le Moment !</h1>
+            <h1 class="text-3xl font-semibold md:col-span-2 lg:col-span-3 py-3 flex justify-center">Aucun Cours en Attente pour le Moment !</h1>
             <?php
                 }
             ?>
@@ -252,7 +252,7 @@
                     }
                 }else{
             ?>
-            <h1 class="text-3xl font-semibold md:col-span-2 lg:col-span-3 py-3 flex justify-center">Aucun Article Refusé pour le Moment !</h1>
+            <h1 class="text-3xl font-semibold md:col-span-2 lg:col-span-3 py-3 flex justify-center">Aucun Cours Refusé pour le Moment !</h1>
             <?php
                 }
             ?>
@@ -313,7 +313,7 @@
                     }
                 }else{
             ?>
-            <h1 class="text-3xl font-semibold md:col-span-2 lg:col-span-3 py-3 flex justify-center">Aucun Article Approuvé pour le Moment !</h1>
+            <h1 class="text-3xl font-semibold md:col-span-2 lg:col-span-3 py-3 flex justify-center">Aucun Cours Approuvé pour le Moment !</h1>
             <?php
                 }
             ?>
