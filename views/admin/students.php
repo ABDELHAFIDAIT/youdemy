@@ -2,7 +2,7 @@
 
     session_start();
 
-    require_once "../../classes/teacher.php";
+    require_once "../../classes/student.php";
     require_once "../../classes/admin.php";
     require_once "../../classes/category.php";
     require_once "../../classes/course.php";
@@ -106,7 +106,70 @@
     </header>
 
     <main class="bg-gray-100 pt-24 pb-12 px-5">
-        <!-- Statistiques -->
+        <!-- HEAD -->
+        <section class="flex flex-wrap items-center justify-between gap-5 py-5">
+            <h1 class="text-3xl text-gray-800 font-bold">Les Etudiants</h1>
+            <div class="w-full max-w-lg">
+                <form class="sm:flex sm:items-center">
+                    <input class="inline w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-3 leading-5 placeholder-gray-500 focus:border-indigo-500 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" placeholder="Rechercher un Cours .." type="search">
+                    <button type="submit" class="mt-3 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Search
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- STUDENTS -->
+        <section class="p-8 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <?php
+                $students = $administrator->showUsers(2);
+                if ($students) {
+                    foreach ($students as $student) {
+                        $etudiant = new Student($student['nom'],$student['prenom'],$student['phone'],$student['email'],$student['password'],'Etudiant',$student['statut'],$student['photo']);
+                        $id = $student['id_user'];
+            ?>
+
+            <div class="">
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl p-6 animate__animated animate__fadeIn hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center justify-center">
+                        <div class="flex flex-col items-center gap-2">
+                            <img src="../../uploads/<?php echo $etudiant->getPhoto() ?>" alt="Profile" class="h-16 w-16 rounded-full object-cover mb-4">
+                            <p class="text-lg font-semibold text-gray-800"><?php echo $etudiant->getPrenom().' '.$etudiant->getNom() ?></p>
+                            <a href="mailto: <?php echo $etudiant->getEmail() ?>"><p class="text-sm text-gray-600"><?php echo $etudiant->getEmail() ?></p></a>
+                            <a href="tel: <?php echo $etudiant->getTelephone() ?>"><p class="text-sm text-gray-600"><?php echo $etudiant->getTelephone() ?></p></a>
+                            <div class="flex items-center gap-3">
+                            <?php
+                                if($etudiant->getStatus() == 'Actif') {
+                            ?>
+                            <form method="POST">
+                                <input type="hidden" name="user" value="<?php echo $id ?>">
+                                <button name="suspend" class="duration-300 text-white bg-gray-800 py-1 px-4 rounded-sm text-xs">Suspendre <i class="ml-1 fa-solid fa-ban"></i></button>
+                            </form>
+                            <form method="POST">
+                                <input type="hidden" name="user" value="<?php echo $id ?>">
+                                <button name="delete" class="duration-300 text-white bg-red-800 py-1 px-4 rounded-sm text-xs hover:bg-red-600">Supprimer <i class="ml-1 fa-solid fa-trash"></i></button>
+                            </form>
+                            <?php
+                                }else{
+                            ?>
+                            <form method="POST">
+                                <input type="hidden" name="user" value="<?php echo $id ?>">
+                                <button name="suspend" class="duration-300 text-white bg-green-600 py-1 px-4 rounded-sm text-xs hover:bg-green-500">Activer <i class="ml-1 fa-solid fa-square-check"></i></button>
+                            </form>
+                            <?php
+                                }
+                            ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php
+                    }
+                }
+            ?>
+        </section>
         
     </main>
 

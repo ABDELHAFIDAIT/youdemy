@@ -50,6 +50,29 @@
                 throw new Exception("Erreur lors de l'approbation du cours : " . $e->getMessage());
             }
         }
+
+
+        // SHOW USERS
+        public function showUsers($role) {
+            try {
+                $query = "SELECT * FROM users 
+                          WHERE id_role = :role 
+                          ORDER BY date_inscription DESC";
+        
+                $stmt = $this->database->prepare($query);
+                $stmt->bindValue(':role', $role, PDO::PARAM_INT);
+        
+                $stmt->execute();
+                if ($stmt->rowCount() > 0) {
+                    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la récupération des utilisateurs : " . $e->getMessage());
+            }
+        }
+        
         
 
     }
