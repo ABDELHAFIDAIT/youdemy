@@ -73,8 +73,52 @@
             }
         }
         
+        // ACTIVATE USER
+        public function activateUser($id_user) {
+            try {
+                $query = "UPDATE users 
+                          SET statut = 'Actif' 
+                          WHERE id_user = :id_user";
         
+                $stmt = $this->database->prepare($query);
+                $stmt->bindValue(':id_user', $id_user, PDO::PARAM_INT);
+        
+                return $stmt->execute();
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de l'activation de l'utilisateur : " . $e->getMessage());
+            }
+        }
 
+        // SUSPEND USER
+        public function suspendUser($id_user) {
+            try {
+                $query = "UPDATE users 
+                          SET statut = 'Bloqué' 
+                          WHERE id_user = :id_user";
+        
+                $stmt = $this->database->prepare($query);
+                $stmt->bindValue(':id_user', $id_user, PDO::PARAM_INT);
+        
+                return $stmt->execute();
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la suspension de l'utilisateur : " . $e->getMessage());
+            }
+        }
+
+        // DELETE USER
+        public function deleteUser($id_user) {
+            try {
+                $query = "DELETE FROM users 
+                          WHERE id_user = :id_user";
+        
+                $stmt = $this->database->prepare($query);
+                $stmt->bindValue(':id_user', $id_user, PDO::PARAM_INT);
+        
+                return $stmt->execute();
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la suppression de l'utilisateur : " . $e->getMessage());
+            }
+        }
     }
 
 ?>

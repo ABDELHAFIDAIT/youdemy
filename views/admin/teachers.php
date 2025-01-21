@@ -24,11 +24,22 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // disconnect
         if(isset($_POST['disconnect'])) {
             session_unset();
             session_destroy();
             header("Location: ../guest");
             exit();
+        }
+        // activate
+        if(isset($_POST["activate"])) {
+            $id = $_POST['user'];
+            $administrator->activateUser($id);
+        }
+        // suspend
+        if(isset($_POST["suspend"])) {
+            $id = $_POST['user'];
+            $administrator->suspendUser($id);
         }
     }
 
@@ -149,7 +160,7 @@
                             ?>
                             <form method="POST">
                                 <input type="hidden" name="user" value="<?php echo $enseignant->getId() ?>">
-                                <button name="suspend" class="duration-300 text-white bg-green-600 py-1 px-4 rounded-sm text-xs hover:bg-green-500">Activer <i class="ml-1 fa-solid fa-square-check"></i></button>
+                                <button name="activate" class="duration-300 text-white bg-green-600 py-1 px-4 rounded-sm text-xs hover:bg-green-500">Valider <i class="ml-1 fa-solid fa-square-check"></i></button>
                             </form>
                             <?php
                                 }

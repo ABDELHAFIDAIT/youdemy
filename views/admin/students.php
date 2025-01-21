@@ -24,11 +24,27 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //disconnect
         if(isset($_POST['disconnect'])) {
             session_unset();
             session_destroy();
             header("Location: ../guest");
             exit();
+        }
+        // activate
+        if(isset($_POST["activate"])) {
+            $id = $_POST['user'];
+            $administrator->activateUser($id);
+        }
+        // suspend
+        if(isset($_POST["suspend"])) {
+            $id = $_POST['user'];
+            $administrator->suspendUser($id);
+        }
+        // delete
+        if(isset($_POST['delete'])) {
+            $id = $_POST['user'];
+            $administrator->deleteUser($id);
         }
     }
 
@@ -137,18 +153,20 @@
                             <p class="text-lg font-semibold text-gray-800"><?php echo $etudiant->getPrenom().' '.$etudiant->getNom() ?></p>
                             <a href="mailto: <?php echo $etudiant->getEmail() ?>"><p class="text-sm text-gray-600"><?php echo $etudiant->getEmail() ?></p></a>
                             <a href="tel: <?php echo $etudiant->getTelephone() ?>"><p class="text-sm text-gray-600"><?php echo $etudiant->getTelephone() ?></p></a>
-                            <div class="flex items-center gap-3">
+                            
                             <?php
                                 if($etudiant->getStatus() == 'Actif') {
                             ?>
-                            <form method="POST">
-                                <input type="hidden" name="user" value="<?php echo $id ?>">
-                                <button name="suspend" class="duration-300 text-white bg-gray-800 py-1 px-4 rounded-sm text-xs">Suspendre <i class="ml-1 fa-solid fa-ban"></i></button>
-                            </form>
-                            <form method="POST">
-                                <input type="hidden" name="user" value="<?php echo $id ?>">
-                                <button name="delete" class="duration-300 text-white bg-red-800 py-1 px-4 rounded-sm text-xs hover:bg-red-600">Supprimer <i class="ml-1 fa-solid fa-trash"></i></button>
-                            </form>
+                            <div class="flex items-center gap-3">
+                                <form method="POST">
+                                    <input type="hidden" name="user" value="<?php echo $id ?>">
+                                    <button name="suspend" class="duration-300 text-white bg-gray-800 py-1 px-4 rounded-sm text-xs">Suspendre <i class="ml-1 fa-solid fa-ban"></i></button>
+                                </form>
+                                <form method="POST">
+                                    <input type="hidden" name="user" value="<?php echo $id ?>">
+                                    <button name="delete" class="duration-300 text-white bg-red-600 py-1 px-4 rounded-sm text-xs hover:bg-red-500">Supprimer <i class="ml-1 fa-solid fa-trash"></i></button>
+                                </form>
+                            </div>
                             <?php
                                 }else{
                             ?>
@@ -159,7 +177,7 @@
                             <?php
                                 }
                             ?>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
